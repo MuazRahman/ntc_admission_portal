@@ -40,7 +40,11 @@ class AdmissionRepository {
     return VerifyResult(hasSubmission: hasSubmission);
   }
 
-  Future<bool> submitAdmission(List<dynamic> row) async {
+  Future<bool?> checkSubmission(String rollNumber) {
+    return _sheetsService.hasSubmission(rollNumber.trim());
+  }
+
+  Future<SubmitResult> submitAdmission(List<dynamic> row) async {
     return await _sheetsService.appendRow(row);
   }
 

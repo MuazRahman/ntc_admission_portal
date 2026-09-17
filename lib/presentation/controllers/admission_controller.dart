@@ -15,6 +15,7 @@ class AdmissionController extends GetxController {
   final currentStep = 0.obs;
   final isLoading = false.obs;
   final isRollVerified = false.obs;
+  final verifiedRoll = ''.obs;
   final studentName = ''.obs;
   final rollError = ''.obs;
   final alreadySubmitted = false.obs;
@@ -101,21 +102,26 @@ class AdmissionController extends GetxController {
     isLoading.value = true;
     rollError.value = '';
     alreadySubmitted.value = false;
+    isRollVerified.value = false;
+    verifiedRoll.value = '';
 
     final result = await _repository.verifyRoll(rollNumber.trim());
 
     if (result.student != null) {
       if (result.hasSubmission == null) {
         isRollVerified.value = false;
+        verifiedRoll.value = '';
         studentName.value = '';
         rollError.value = 'step1_check_failed'.tr;
       } else if (result.hasSubmission!) {
         isRollVerified.value = false;
+        verifiedRoll.value = '';
         studentName.value = '';
         alreadySubmitted.value = true;
         rollError.value = 'step1_already_submitted'.tr;
       } else {
         isRollVerified.value = true;
+        verifiedRoll.value = result.student!.rollNumber.trim();
         studentName.value = result.student!.fullName;
         alreadySubmitted.value = false;
         formData.value = formData.value.copyWith(
@@ -125,12 +131,27 @@ class AdmissionController extends GetxController {
       }
     } else {
       isRollVerified.value = false;
+      verifiedRoll.value = '';
       studentName.value = '';
       alreadySubmitted.value = false;
       rollError.value = 'step1_not_found'.tr;
     }
 
     isLoading.value = false;
+  }
+
+  /// Call when the roll text field changes after a successful verify.
+  /// Prevents proceeding with a different roll than the one that was checked
+  /// live against the submissions sheet.
+  void onRollTextChanged(String currentText) {
+    if (isRollVerified.value &&
+        currentText.trim() != verifiedRoll.value.trim()) {
+      isRollVerified.value = false;
+      verifiedRoll.value = '';
+      studentName.value = '';
+      rollError.value = '';
+      alreadySubmitted.value = false;
+    }
   }
 
   void updateFatherName(String name) {
@@ -177,6 +198,49 @@ class AdmissionController extends GetxController {
       print('[Controller] Roll: ${formData.value.rollNumber}');
       print('[Controller] Image path: ${selectedImagePath.value}');
 
+      final roll = formData.value.rollNumber.trim();
+      if (roll.isEmpty || !isRollVerified.value) {
+        Get.snackbar(
+          'error'.tr,
+          'step1_not_found'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+          colorText: AppColors.ntcRed,
+        );
+        currentStep.value = 0;
+        return;
+      }
+
+      // LIVE re-check: submissions sheet is the source of truth.
+      // Student list may be cached, but this call always hits the Sheet.
+      final duplicate = await _repository.checkSubmission(roll);
+      if (duplicate == true) {
+        isRollVerified.value = false;
+        studentName.value = '';
+        alreadySubmitted.value = true;
+        rollError.value = 'step1_already_submitted'.tr;
+        currentStep.value = 0;
+        Get.snackbar(
+          'error'.tr,
+          'step1_already_submitted'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+          colorText: AppColors.ntcRed,
+        );
+        return;
+      }
+      if (duplicate == null) {
+        rollError.value = 'step1_check_failed'.tr;
+        Get.snackbar(
+          'error'.tr,
+          'step1_check_failed'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+          colorText: AppColors.ntcRed,
+        );
+        return;
+      }
+
       // Upload image if selected
       if (selectedImagePath.value.isNotEmpty) {
         print('[Controller] Uploading image...');
@@ -200,13 +264,39 @@ class AdmissionController extends GetxController {
       formData.value = formData.value.copyWith(referenceNumber: refNumber);
 
       // Submit to Google Sheets
-      final success = await _repository.submitAdmission(formData.value.toSheetRow());
+      final result = await _repository.submitAdmission(formData.value.toSheetRow());
 
-      if (success) {
+      if (result.isDuplicate) {
+        isRollVerified.value = false;
+        studentName.value = '';
+        alreadySubmitted.value = true;
+        rollError.value = 'step1_already_submitted'.tr;
+        currentStep.value = 0;
+        Get.snackbar(
+          'error'.tr,
+          'step1_already_submitted'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+          colorText: AppColors.ntcRed,
+        );
+        return;
+      }
+
+      if (result.success) {
+        final submittedName = formData.value.fullName;
+        resetForm();
         Get.offNamed('/success', arguments: {
           'referenceNumber': refNumber,
-          'studentName': formData.value.fullName,
+          'studentName': submittedName,
         });
+      } else {
+        Get.snackbar(
+          'error'.tr,
+          'error_message'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+          colorText: AppColors.ntcRed,
+        );
       }
     } catch (e) {
       print('[Controller] Submission error: $e');
@@ -218,6 +308,7 @@ class AdmissionController extends GetxController {
   void resetForm() {
     currentStep.value = 0;
     isRollVerified.value = false;
+    verifiedRoll.value = '';
     studentName.value = '';
     rollError.value = '';
     alreadySubmitted.value = false;

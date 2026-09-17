@@ -2,6 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../app/utils/constants.dart';
 
+class SubmitResult {
+  final bool success;
+  final bool isDuplicate;
+
+  const SubmitResult({required this.success, this.isDuplicate = false});
+}
+
 class GoogleSheetsService {
   List<List<dynamic>>? _cachedStudents;
 
@@ -63,7 +70,7 @@ class GoogleSheetsService {
     }
   }
 
-  Future<bool> appendRow(List<dynamic> row) async {
+  Future<SubmitResult> appendRow(List<dynamic> row) async {
     try {
       final body = json.encode({
         'action': 'appendSubmission',
@@ -85,13 +92,18 @@ class GoogleSheetsService {
         print('[SheetsService] appendRow response: $data');
         if (data['success'] == true) {
           _cachedStudents = null;
+          return const SubmitResult(success: true);
         }
-        return data['success'] == true;
+        // Server-side duplicate guard (see script_google.md)
+        if (data['error'] == 'already_submitted') {
+          return const SubmitResult(success: false, isDuplicate: true);
+        }
+        return const SubmitResult(success: false);
       }
-      return false;
+      return const SubmitResult(success: false);
     } catch (e) {
       print('[SheetsService] Exception during appendRow: $e');
-      return false;
+      return const SubmitResult(success: false);
     }
   }
 }

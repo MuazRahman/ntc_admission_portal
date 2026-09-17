@@ -21,7 +21,22 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
   bool _initialized = false;
 
   @override
+  void initState() {
+    super.initState();
+    _rollController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    if (!mounted) return;
+    try {
+      Get.find<AdmissionController>()
+          .onRollTextChanged(_rollController.text);
+    } catch (_) {}
+  }
+
+  @override
   void dispose() {
+    _rollController.removeListener(_onTextChanged);
     _rollController.dispose();
     super.dispose();
   }
@@ -105,6 +120,7 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                               onPressed: () {
                                 _rollController.clear();
                                 controller.isRollVerified.value = false;
+                                controller.verifiedRoll.value = '';
                                 controller.studentName.value = '';
                                 controller.rollError.value = '';
                                 controller.alreadySubmitted.value = false;

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/responsive.dart';
 import '../../../app/routes/app_routes.dart';
+import '../controllers/admission_controller.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -200,7 +201,14 @@ class LandingPage extends StatelessWidget {
                             ],
                           ),
                           child: ElevatedButton(
-                            onPressed: () => Get.toNamed(AppRoutes.admissionFlow),
+                            onPressed: () {
+                              // Ensure a stale verified state can never be reused.
+                              // Next verify will always live-check submissions sheet.
+                              if (Get.isRegistered<AdmissionController>()) {
+                                Get.find<AdmissionController>().resetForm();
+                              }
+                              Get.toNamed(AppRoutes.admissionFlow);
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,

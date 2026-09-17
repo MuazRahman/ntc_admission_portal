@@ -79,8 +79,13 @@ function checkSubmission(rollNumber) {
   return { success: true, exists: exists };
 }
 
-// Append submission row
+// Append submission row (with server-side duplicate guard)
+// submissions sheet: column B (index 1) = rollNumber (from toSheetRow)
 function appendSubmission(rowData) {
+  const rollNumber = rowData[1].toString().trim();
+  if (checkSubmission(rollNumber).exists) {
+    return { success: false, error: 'already_submitted' };
+  }
   const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName('submissions');
   sheet.appendRow(rowData);
   return { success: true };
