@@ -60,7 +60,7 @@ class SuccessPage extends StatelessWidget {
                     ).animate().fadeIn(delay: 200.ms),
                   const SizedBox(height: 4),
                   Text(
-                    'আপনার আবেদনটি সফলভাবে জমা হয়েছে।',
+                    'আপনার তথ্য সফলভাবে জমা হয়েছে।',
                     style: TextStyle(
                       fontSize: isMobile ? 16 : 20,
                       fontWeight: FontWeight.w400,
