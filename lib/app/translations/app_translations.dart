@@ -5,7 +5,7 @@ class AppTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en_US': {
           // General
-          'app_title': 'NTC Student Admission Portal',
+          'app_title': 'NTC Student Information Portal',
           'next': 'Next',
           'back': 'Back',
           'submit': 'Submit',
@@ -17,10 +17,10 @@ class AppTranslations extends Translations {
 
           // Landing
           'landing_title': 'NTC',
-          'landing_subtitle': 'Student Admission Portal',
-          'landing_subtitle_bn': 'এনটিসি ভর্তি পোর্টাল',
-          'landing_button': 'Start Admission / ভর্তি শুরু করুন',
-          'landing_description': 'Roll-based online admission form',
+          'landing_subtitle': 'Student Information Portal',
+          // 'landing_subtitle_bn': 'এনটিসি ভর্তি পোর্টাল',
+          'landing_button': 'Submit Information / তথ্য জমা দিন',
+          'landing_description': 'Roll-based online information form',
 
           // Step 1 - Roll Verification
           'step1_title': 'Roll Verification',
@@ -113,7 +113,7 @@ class AppTranslations extends Translations {
         },
         'bn_BD': {
           // General
-          'app_title': 'এনটিসি ভর্তি পোর্টাল',
+          'app_title': 'তথ্য হালনাগাদ ফর্ম',
           'next': 'পরবর্তী',
           'back': 'পূর্ববর্তী',
           'submit': 'জমা দিন',
@@ -125,15 +125,15 @@ class AppTranslations extends Translations {
 
           // Landing
           'landing_title': 'এনটিসি',
-          'landing_subtitle': 'Student Admission Portal',
-          'landing_subtitle_bn': 'এনটিসি ভর্তি পোর্টাল',
-          'landing_button': 'Start Admission / ভর্তি শুরু করুন',
-          'landing_description': 'রোল-ভিত্তিক অনলাইন ভর্তি ফর্ম',
+          'landing_subtitle': 'Student Information Portal',
+          'landing_subtitle_bn': 'এনটিসি তথ্য পোর্টাল',
+          'landing_button': 'Submit Information / তথ্য জমা দিন',
+          'landing_description': 'রোল-ভিত্তিক অনলাইন তথ্য ফর্ম',
 
           // Step 1 - Roll Verification
           'step1_title': 'রোল যাচাই',
           'step1_subtitle': 'আপনার রোল নম্বর যাচাই করুন',
-          'step1_roll_hint': 'রোল নম্বর প্রবেশ করুন',
+          'step1_roll_hint': 'রোল নম্বর দিন',
           'step1_name_label': 'পূর্ণ নাম',
           'step1_name_readonly': '(রেকর্ড থেকে যাচাইকৃত)',
           'step1_verify': 'যাচাই করুন',

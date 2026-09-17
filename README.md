@@ -1,4 +1,4 @@
-# ntc_admission_portal
+# ntc_information_portal
 
 A new Flutter project.
 

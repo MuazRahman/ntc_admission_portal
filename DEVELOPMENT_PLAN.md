@@ -1,4 +1,4 @@
-# NTC Student Admission Portal - Development Plan
+# NTC Student Information Portal - Development Plan
 
 ## Project Overview
 **Platform**: Flutter Web & Mobile (Android/iOS)

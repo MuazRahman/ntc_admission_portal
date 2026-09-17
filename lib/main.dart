@@ -15,7 +15,7 @@ class NTCApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'NTC Student Admission Portal',
+      title: 'NTC Student Information Portal',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       translations: AppTranslations(),

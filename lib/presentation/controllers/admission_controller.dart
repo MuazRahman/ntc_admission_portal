@@ -22,7 +22,7 @@ class AdmissionController extends GetxController {
   final selectedImagePath = ''.obs;
   final imageUrl = ''.obs;
 
-  static const int totalSteps = 6;
+  static const int totalSteps = 4;
 
   bool get canGoNext => currentStep.value < totalSteps - 1;
   bool get canGoBack => currentStep.value > 0;
@@ -33,12 +33,6 @@ class AdmissionController extends GetxController {
     
     // Validate current step before advancing
     if (!_validateCurrentStep()) return;
-    
-    // Skip HSC (step 4) if not completed
-    if (currentStep.value == 3 && !formData.value.hscComplete) {
-      currentStep.value = 5; // Skip to step 6 (Upload & Submit)
-      return;
-    }
     
     currentStep.value++;
   }
@@ -59,19 +53,6 @@ class AdmissionController extends GetxController {
         }
         return true;
       case 1:
-        // Step 2: Parent names required
-        if (formData.value.fatherName.trim().isEmpty || formData.value.motherName.trim().isEmpty) {
-          Get.snackbar(
-            'error'.tr,
-            'val_required'.tr,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
-            colorText: AppColors.ntcRed,
-          );
-          return false;
-        }
-        return true;
-      case 2:
         // Step 3: Identity document required
         if (formData.value.identity.documentNumber.trim().isEmpty) {
           Get.snackbar(
@@ -84,30 +65,12 @@ class AdmissionController extends GetxController {
           return false;
         }
         return true;
-      case 3:
+      case 2:
         // Step 4: SSC info required
         if (formData.value.ssc.roll.trim().isEmpty ||
             formData.value.ssc.registrationNumber.trim().isEmpty ||
             formData.value.ssc.board.trim().isEmpty ||
-            formData.value.ssc.passingYear.trim().isEmpty ||
-            formData.value.ssc.gpa.trim().isEmpty) {
-          Get.snackbar(
-            'error'.tr,
-            'val_required'.tr,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
-            colorText: AppColors.ntcRed,
-          );
-          return false;
-        }
-        return true;
-      case 4:
-        // Step 5: HSC info required
-        if (formData.value.hsc.roll.trim().isEmpty ||
-            formData.value.hsc.registrationNumber.trim().isEmpty ||
-            formData.value.hsc.board.trim().isEmpty ||
-            formData.value.hsc.passingYear.trim().isEmpty ||
-            formData.value.hsc.gpa.trim().isEmpty) {
+            formData.value.ssc.passingYear.trim().isEmpty) {
           Get.snackbar(
             'error'.tr,
             'val_required'.tr,
@@ -125,11 +88,6 @@ class AdmissionController extends GetxController {
 
   void previousStep() {
     if (canGoBack) {
-      // Skip HSC (step 4) if not completed when going back
-      if (currentStep.value == 5 && !formData.value.hscComplete) {
-        currentStep.value = 3; // Go back to SSC
-        return;
-      }
       currentStep.value--;
     }
   }

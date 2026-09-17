@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="ntc_admission_portal"
+        android:label="NTC Student Information Portal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

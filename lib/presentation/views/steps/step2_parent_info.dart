@@ -37,17 +37,19 @@ class _Step2ParentInfoState extends State<Step2ParentInfo> {
   Widget build(BuildContext context) {
     final controller = Get.find<AdmissionController>();
 
-    return Center(
+    return Align(
+      alignment: Alignment.topCenter,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Form(
             key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const SizedBox(height: 30,),
                 StepHeader(
                   title: 'step2_title'.tr,
                   subtitle: 'step2_subtitle'.tr,

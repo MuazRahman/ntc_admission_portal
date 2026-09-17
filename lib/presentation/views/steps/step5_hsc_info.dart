@@ -7,23 +7,45 @@ import '../../controllers/admission_controller.dart';
 import '../widgets/step_header.dart';
 import '../widgets/custom_text_field.dart';
 
-class Step5HSCInfo extends StatelessWidget {
+class Step5HSCInfo extends StatefulWidget {
   const Step5HSCInfo({super.key});
+
+  @override
+  State<Step5HSCInfo> createState() => _Step5HSCInfoState();
+}
+
+class _Step5HSCInfoState extends State<Step5HSCInfo> {
+  late final TextEditingController rollCtrl;
+  late final TextEditingController regCtrl;
+  late final TextEditingController yearCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    final controller = Get.find<AdmissionController>();
+    rollCtrl = TextEditingController(text: controller.formData.value.hsc.roll);
+    regCtrl = TextEditingController(text: controller.formData.value.hsc.registrationNumber);
+    yearCtrl = TextEditingController(text: controller.formData.value.hsc.passingYear);
+  }
+
+  @override
+  void dispose() {
+    rollCtrl.dispose();
+    regCtrl.dispose();
+    yearCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AdmissionController>();
 
-    final rollCtrl = TextEditingController(text: controller.formData.value.hsc.roll);
-    final regCtrl = TextEditingController(text: controller.formData.value.hsc.registrationNumber);
-    final yearCtrl = TextEditingController(text: controller.formData.value.hsc.passingYear);
-    final gpaCtrl = TextEditingController(text: controller.formData.value.hsc.gpa);
-
-    return Center(
+    return Align(
+      alignment: Alignment.topCenter,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
           child: Form(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
@@ -35,7 +57,7 @@ class Step5HSCInfo extends StatelessWidget {
                   icon: Icons.account_balance,
                 ),
                 const SizedBox(height: 24),
-                _buildMobileLayout(controller, rollCtrl, regCtrl, yearCtrl, gpaCtrl),
+                _buildMobileLayout(controller, rollCtrl, regCtrl, yearCtrl),
               ],
             ),
           ),
@@ -49,7 +71,6 @@ class Step5HSCInfo extends StatelessWidget {
     TextEditingController rollCtrl,
     TextEditingController regCtrl,
     TextEditingController yearCtrl,
-    TextEditingController gpaCtrl,
   ) {
     return Column(
       children: [
@@ -86,18 +107,7 @@ class Step5HSCInfo extends StatelessWidget {
             controller.updateHSC(controller.formData.value.hsc.copyWith(passingYear: v));
           },
         ),
-        const SizedBox(height: 16),
-        CustomTextField(
-          label: 'step5_gpa_hint'.tr,
-          hint: 'step5_gpa_hint'.tr,
-          controller: gpaCtrl,
-          validator: Validators.gpa,
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          onChanged: (v) {
-            controller.updateHSC(controller.formData.value.hsc.copyWith(gpa: v));
-          },
-        ),
-      ],
+        ],
     );
   }
 
@@ -109,7 +119,7 @@ class Step5HSCInfo extends StatelessWidget {
         Text(
           'step5_board_hint'.tr,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -121,17 +131,17 @@ class Step5HSCInfo extends StatelessWidget {
           decoration: InputDecoration(
             hintText: 'step5_board_hint'.tr,
             filled: true,
-            fillColor: const Color(0xFFEFF2F7),
+            fillColor: Colors.white,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade400, width: 1.3),
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade400, width: 1.3),
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
               borderSide: const BorderSide(color: AppColors.ntcBlue, width: 1.8),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -139,7 +149,7 @@ class Step5HSCInfo extends StatelessWidget {
           items: boards.map((String board) {
             return DropdownMenuItem<String>(
               value: board,
-              child: Text(board, style: const TextStyle(fontSize: 14)),
+              child: Text(board, style: const TextStyle(fontSize: 16)),
             );
           }).toList(),
           onChanged: (String? value) {

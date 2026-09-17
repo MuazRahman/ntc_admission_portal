@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/app_colors.dart';
 
 class GradientButton extends StatelessWidget {
@@ -21,16 +22,20 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSuccess = gradient != null;
     final button = Container(
       decoration: BoxDecoration(
         gradient: gradient ?? AppColors.buttonGradient,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.22),
+        ),
         boxShadow: [
           BoxShadow(
-            color: (gradient != null ? AppColors.ntcGreen : AppColors.ntcRed)
-                .withValues(alpha: 0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: (isSuccess ? AppColors.ntcGreen : AppColors.ntcBlue)
+                .withValues(alpha: 0.35),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -43,9 +48,9 @@ class GradientButton extends StatelessWidget {
           disabledBackgroundColor: Colors.transparent,
           disabledForegroundColor: Colors.white70,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
           minimumSize: const Size(double.infinity, 54),
         ),
         child: isLoading
@@ -59,18 +64,30 @@ class GradientButton extends StatelessWidget {
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (icon != null) ...[
-                    Icon(icon, size: 20),
-                    const SizedBox(width: 8),
-                  ],
-                  Text(
-                    text,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                  Flexible(
+                    child: Text(
+                      text,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.1,
+                      ),
                     ),
                   ),
+                  if (icon != null) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(icon, size: 14),
+                    ),
+                  ],
                 ],
               ),
       ),
