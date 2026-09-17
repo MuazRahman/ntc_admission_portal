@@ -24,6 +24,9 @@ class AdmissionFlowPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
+      // Shrink body above keyboard so Verify stays visible instead of
+      // being covered by the bottom bar.
+      resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(64),
         child: Container(
@@ -124,13 +127,25 @@ class AdmissionFlowPage extends StatelessWidget {
               );
             }),
           ),
-          _buildBottomNav(controller, isMobile),
+          // Hide the bottom bar while the keyboard is open on Step 0 so
+          // Verify (inside the scroll view, padded above the keyboard)
+          // is the only action. Users can't tap Next instead of Verify.
+          Obx(() {
+            final isStep0 = controller.currentStep.value == 0;
+            final keyboardOpen =
+                MediaQuery.of(context).viewInsets.bottom > 0;
+            if (isStep0 && keyboardOpen) {
+              return const SizedBox.shrink();
+            }
+            return _buildBottomNav(context, controller, isMobile);
+          }),
         ],
       ),
     );
   }
 
-  Widget _buildBottomNav(AdmissionController controller, bool isMobile) {
+  Widget _buildBottomNav(
+      BuildContext context, AdmissionController controller, bool isMobile) {
     return Container(
       padding: EdgeInsets.fromLTRB(
         isMobile ? 16 : 24,
@@ -158,47 +173,74 @@ class AdmissionFlowPage extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),
           child: Obx(() {
-            return Row(
+            // On Step 0 Next is meaningless until Verify succeeds.
+            // Dim it so Verify (inside the card) reads as the primary action.
+            final needVerify = controller.currentStep.value == 0 &&
+                !controller.isRollVerified.value;
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (controller.canGoBack)
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => controller.previousStep(),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: const BorderSide(color: AppColors.inputBorder),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        foregroundColor: AppColors.textSecondary,
-                        backgroundColor: AppColors.scaffoldBg,
+                if (needVerify)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      'step1_verify_first'.tr,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textSecondary,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.arrow_back_ios_new, size: 15),
-                          const SizedBox(width: 6),
-                          Text(
-                            'back'.tr,
-                            style: GoogleFonts.inter(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                Row(
+                  children: [
+                    if (controller.canGoBack)
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => controller.previousStep(),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            side: const BorderSide(color: AppColors.inputBorder),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
+                            foregroundColor: AppColors.textSecondary,
+                            backgroundColor: AppColors.scaffoldBg,
                           ),
-                        ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.arrow_back_ios_new, size: 15),
+                              const SizedBox(width: 6),
+                              Text(
+                                'back'.tr,
+                                style: GoogleFonts.inter(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                if (controller.canGoBack) const SizedBox(width: 12),
-                if (!controller.isLastStep)
-                  Expanded(
-                    child: GradientButton(
-                      text: 'next'.tr,
-                      icon: Icons.arrow_forward_ios,
-                      onPressed: () => controller.nextStep(),
-                    ),
-                  ),
-                if (controller.isLastStep) const Expanded(child: SizedBox()),
+                    if (controller.canGoBack) const SizedBox(width: 12),
+                    if (!controller.isLastStep)
+                      Expanded(
+                        child: Opacity(
+                          opacity: needVerify ? 0.5 : 1.0,
+                          child: GradientButton(
+                            text: 'next'.tr,
+                            icon: Icons.arrow_forward_ios,
+                            onPressed: () => controller.nextStep(),
+                          ),
+                        ),
+                      ),
+                    if (controller.isLastStep)
+                      const Expanded(child: SizedBox()),
+                  ],
+                ),
               ],
             );
           }),

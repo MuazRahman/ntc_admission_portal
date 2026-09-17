@@ -18,12 +18,30 @@ class Step1RollVerification extends StatefulWidget {
 class _Step1RollVerificationState extends State<Step1RollVerification> {
   final _formKey = GlobalKey<FormState>();
   final _rollController = TextEditingController();
+  final _scrollController = ScrollController();
+  final _rollFocus = FocusNode();
   bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
     _rollController.addListener(_onTextChanged);
+    // When keyboard opens, scroll Verify button into view above keyboard.
+    _rollFocus.addListener(() {
+      if (_rollFocus.hasFocus) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Future.delayed(const Duration(milliseconds: 300), () {
+            if (mounted && _scrollController.hasClients) {
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOut,
+              );
+            }
+          });
+        });
+      }
+    });
   }
 
   void _onTextChanged() {
@@ -34,10 +52,19 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
     } catch (_) {}
   }
 
+  void _doVerify(AdmissionController controller) {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState!.validate()) {
+      controller.verifyRoll(_rollController.text);
+    }
+  }
+
   @override
   void dispose() {
     _rollController.removeListener(_onTextChanged);
     _rollController.dispose();
+    _rollFocus.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -55,7 +82,15 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          controller: _scrollController,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            16,
+            12,
+            16,
+            // Keep Verify button above the keyboard on mobile.
+            24 + MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Form(
             key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -86,6 +121,14 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                         controller: _rollController,
                         validator: Validators.rollNumber,
                         keyboardType: TextInputType.number,
+                        focusNode: _rollFocus,
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (_) {
+                          if (!controller.isLoading.value &&
+                              !controller.isRollVerified.value) {
+                            _doVerify(controller);
+                          }
+                        },
                         prefix: Container(
                           margin: const EdgeInsets.all(8),
                           padding: const EdgeInsets.all(8),
@@ -214,11 +257,7 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                           child: InkWell(
                             onTap: (isLoading || isVerified)
                                 ? null
-                                : () {
-                                    if (_formKey.currentState!.validate()) {
-                                      controller.verifyRoll(_rollController.text);
-                                    }
-                                  },
+                                : () => _doVerify(controller),
                             borderRadius: BorderRadius.circular(16),
                             child: isLoading
                                 ? Row(

@@ -14,6 +14,9 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const CustomTextField({
     super.key,
@@ -28,6 +31,9 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.initialValue,
     this.onChanged,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -66,6 +72,9 @@ class CustomTextField extends StatelessWidget {
             readOnly: readOnly,
             maxLines: maxLines,
             onChanged: onChanged,
+            focusNode: focusNode,
+            textInputAction: textInputAction,
+            onFieldSubmitted: onFieldSubmitted,
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w500,

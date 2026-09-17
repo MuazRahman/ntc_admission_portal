@@ -33,6 +33,7 @@ class AppTranslations extends Translations {
           'step1_not_found': 'Roll number not found',
           'step1_already_submitted': 'Your data is already submitted',
           'step1_check_failed': 'Unable to verify submission status. Please try again.',
+          'step1_verify_first': 'Please tap Verify above first',
 
           // Step 2 - Parent Info
           'step2_title': 'Parent Information',
@@ -141,6 +142,7 @@ class AppTranslations extends Translations {
           'step1_not_found': 'রোল নম্বর পাওয়া যায়নি',
           'step1_already_submitted': 'আপনার তথ্য ইতিমধ্যে জমা হয়েছে',
           'step1_check_failed': 'সাবমিশন যাচাই করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।',
+          'step1_verify_first': 'অনুগ্রহ করে প্রথমে উপরে যাচাই করুন চাপুন',
 
           // Step 2 - Parent Info
           'step2_title': 'অভিভাবক তথ্য',
