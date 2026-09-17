@@ -5,6 +5,7 @@ import '../../data/models/ssc_model.dart';
 import '../../data/models/hsc_model.dart';
 import '../../data/repositories/admission_repository.dart';
 import '../../app/utils/helpers.dart';
+import '../../app/utils/validators.dart';
 import '../../app/theme/app_colors.dart';
 
 class AdmissionController extends GetxController {
@@ -54,11 +55,16 @@ class AdmissionController extends GetxController {
         }
         return true;
       case 1:
-        // Step 3: Identity document required
-        if (formData.value.identity.documentNumber.trim().isEmpty) {
+        // Step 3: Identity document must be valid, not just non-empty.
+        // BC = exactly 17 digits, NID = exactly 10 digits.
+        final identity = formData.value.identity;
+        final docError = identity.documentType == DocumentType.birthCertificate
+            ? Validators.birthCertificate(identity.documentNumber)
+            : Validators.nid(identity.documentNumber);
+        if (docError != null) {
           Get.snackbar(
             'error'.tr,
-            'val_required'.tr,
+            _localizedIdentityError(identity.documentType, identity.documentNumber),
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
             colorText: AppColors.ntcRed,
@@ -91,6 +97,23 @@ class AdmissionController extends GetxController {
     if (canGoBack) {
       currentStep.value--;
     }
+  }
+
+  /// Maps identity validation failure to the translated message keys
+  /// already defined in AppTranslations.
+  String _localizedIdentityError(DocumentType type, String number) {
+    final v = number.trim();
+    if (v.isEmpty) {
+      return type == DocumentType.birthCertificate
+          ? 'val_bc_required'.tr
+          : 'val_nid_required'.tr;
+    }
+    if (!RegExp(r'^[0-9]+$').hasMatch(v)) {
+      return 'val_roll_digits'.tr;
+    }
+    return type == DocumentType.birthCertificate
+        ? 'val_bc_digits'.tr
+        : 'val_nid_digits'.tr;
   }
 
   Future<void> verifyRoll(String rollNumber) async {
@@ -234,6 +257,25 @@ class AdmissionController extends GetxController {
         Get.snackbar(
           'error'.tr,
           'step1_check_failed'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+          colorText: AppColors.ntcRed,
+        );
+        return;
+      }
+
+      // Final guard: re-validate identity at submit time. The Step3 Form
+      // validator only shows UI errors — Next/Submit must enforce
+      // BC = 17 digits, NID = 10 digits, so invalid numbers never reach Sheets.
+      final identity = formData.value.identity;
+      final docError = identity.documentType == DocumentType.birthCertificate
+          ? Validators.birthCertificate(identity.documentNumber)
+          : Validators.nid(identity.documentNumber);
+      if (docError != null) {
+        currentStep.value = 1;
+        Get.snackbar(
+          'error'.tr,
+          _localizedIdentityError(identity.documentType, identity.documentNumber),
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
           colorText: AppColors.ntcRed,

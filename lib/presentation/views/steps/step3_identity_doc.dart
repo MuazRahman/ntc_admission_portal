@@ -67,6 +67,17 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                     children: [
                       Obx(() {
                         final selectedType = controller.formData.value.identity.documentType;
+                        void switchType(DocumentType newType) {
+                          if (selectedType == newType) return;
+                          // Never carry over the old type's number (e.g. 10-digit
+                          // NID must not be saved as BC, or vice versa).
+                          _docController.clear();
+                          controller.updateIdentity(newType, '');
+                          // Reset visible validation state so the empty field
+                          // shows "required" instead of a stale error.
+                          _formKey.currentState?.reset();
+                        }
+
                         return Row(
                           children: [
                             Expanded(
@@ -75,7 +86,7 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                                 icon: Icons.child_care,
                                 title: 'step3_birth_cert'.tr,
                                 isSelected: selectedType == DocumentType.birthCertificate,
-                                onTap: () => controller.updateIdentity(DocumentType.birthCertificate, _docController.text),
+                                onTap: () => switchType(DocumentType.birthCertificate),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -85,7 +96,7 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                                 icon: Icons.badge,
                                 title: 'step3_nid'.tr,
                                 isSelected: selectedType == DocumentType.nid,
-                                onTap: () => controller.updateIdentity(DocumentType.nid, _docController.text),
+                                onTap: () => switchType(DocumentType.nid),
                               ),
                             ),
                           ],
