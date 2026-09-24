@@ -15,8 +15,8 @@ class Validators {
     if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
       return 'Roll number must contain only digits';
     }
-    if (value.trim().length > 20) {
-      return 'Roll number must be 20 characters or less';
+    if (value.trim().length > 5) {
+      return 'Roll number must be 5 digits or less';
     }
     return null;
   }
