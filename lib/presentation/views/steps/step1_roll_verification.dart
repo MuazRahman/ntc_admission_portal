@@ -135,6 +135,7 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                         keyboardType: TextInputType.number,
                         focusNode: _rollFocus,
                         autofocus: true,
+                        maxLength: 5,
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (_) {
                           if (!controller.isLoading.value &&
