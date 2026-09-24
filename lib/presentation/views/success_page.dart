@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/utils/responsive.dart';
 import '../../app/routes/app_routes.dart';
+import 'widgets/footer_credit.dart';
 
 class SuccessPage extends StatelessWidget {
   const SuccessPage({super.key});
@@ -188,6 +189,8 @@ class SuccessPage extends StatelessWidget {
                       ),
                     ),
                   ).animate().fadeIn(delay: 600.ms),
+                  const SizedBox(height: 20),
+                  const FooterCredit(dark: true),
                 ],
               ),
             ),

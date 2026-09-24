@@ -6,6 +6,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/responsive.dart';
 import '../../../app/routes/app_routes.dart';
 import '../controllers/admission_controller.dart';
+import 'widgets/footer_credit.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -255,7 +256,9 @@ class LandingPage extends StatelessWidget {
                         ),
                       ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2),
 
-                      const SizedBox(height: 28),
+                      const SizedBox(height: 20),
+                      const FooterCredit(dark: true),
+                      const SizedBox(height: 8),
 
 
                     ],
