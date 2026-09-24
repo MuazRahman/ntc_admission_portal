@@ -22,10 +22,10 @@ class AppTranslations extends Translations {
           'landing_button': 'Submit Information / তথ্য জমা দিন',
           'landing_description': 'Roll-based online information form',
 
-          // Step 1 - Roll Verification
-          'step1_title': 'Roll Verification',
-          'step1_subtitle': 'Enter your roll number to verify',
-          'step1_roll_hint': 'Enter Roll Number',
+          // Step 1 - Phone Verification
+          'step1_title': 'Phone Verification',
+          'step1_subtitle': 'Enter your mobile number to verify',
+          'step1_roll_hint': 'Enter Mobile Number (11 digits)',
           'step1_name_label': 'Full Name',
           'step1_name_readonly': '(Verified from records)',
           'step1_verify': 'Verify',
@@ -131,15 +131,15 @@ class AppTranslations extends Translations {
           'landing_button': 'Submit Information / তথ্য জমা দিন',
           'landing_description': 'রোল-ভিত্তিক অনলাইন তথ্য ফর্ম',
 
-          // Step 1 - Roll Verification
-          'step1_title': 'রোল যাচাই করুন',
-          'step1_subtitle': 'নিচের বক্সে আপনার রোল নাম্বার দিন।',
-          'step1_roll_hint': 'রোল নম্বর দিন',
+          // Step 1 - Mobile Verification
+          'step1_title': 'মোবাইল নম্বর যাচাই করুন',
+          'step1_subtitle': 'নিচের বক্সে আপনার মোবাইল নম্বর দিন।',
+          'step1_roll_hint': '১১ সংখ্যার মোবাইল নম্বর দিন',
           'step1_name_label': 'পূর্ণ নাম',
           'step1_name_readonly': '(রেকর্ড থেকে যাচাইকৃত)',
           'step1_verify': 'যাচাই করুন',
           'step1_verified': 'যাচাইকৃত',
-          'step1_not_found': 'রোল নম্বর পাওয়া যায়নি',
+          'step1_not_found': 'মোবাইল নম্বর পাওয়া যায়নি',
           'step1_already_submitted': 'আপনার তথ্য ইতিমধ্যে জমা হয়েছে',
           'step1_check_failed': 'সাবমিশন যাচাই করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।',
           'step1_verify_first': 'অনুগ্রহ করে প্রথমে উপরে যাচাই করুন চাপুন',

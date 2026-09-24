@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -112,7 +113,7 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                 StepHeader(
                   title: 'step1_title'.tr,
                   subtitle: 'step1_subtitle'.tr,
-                  icon: Icons.badge,
+                  icon: Icons.phone_android,
                 ),
                 const SizedBox(height: 18),
                 // Form card (visual only wrapper — logic unchanged)
@@ -131,11 +132,15 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                         label: 'step1_roll_hint'.tr,
                         hint: 'step1_roll_hint'.tr,
                         controller: _rollController,
-                        validator: Validators.rollNumber,
+                        validator: Validators.phoneNumber,
                         keyboardType: TextInputType.number,
                         focusNode: _rollFocus,
                         autofocus: true,
-                        maxLength: 5,
+                        maxLength: 11,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(11),
+                        ],
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (_) {
                           if (!controller.isLoading.value &&

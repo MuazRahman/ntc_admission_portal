@@ -15,12 +15,14 @@ class AdmissionRepository {
 
   AdmissionRepository(this._sheetsService, this._driveService);
 
-  /// Fetches students and checks submission in parallel
+  /// Fetches students and checks submission in parallel.
+  /// Student list is always refreshed live so Sheet edits are visible
+  /// immediately; the in-memory copy is only a fallback if fetch fails.
   Future<VerifyResult> verifyRoll(String rollNumber) async {
     final trimmed = rollNumber.trim();
 
     final results = await Future.wait([
-      _sheetsService.getStudents(),
+      _sheetsService.getStudents(forceRefresh: true),
       _sheetsService.hasSubmission(trimmed),
     ]);
 

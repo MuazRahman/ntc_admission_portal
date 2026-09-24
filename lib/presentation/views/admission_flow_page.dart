@@ -7,7 +7,7 @@ import '../controllers/admission_controller.dart';
 import 'widgets/progress_stepper.dart';
 import 'widgets/gradient_button.dart';
 import 'widgets/language_toggle.dart';
-import 'steps/step1_roll_verification.dart';
+import 'steps/step1_phone_verification.dart';
 // import 'steps/step2_parent_info.dart';
 import 'steps/step3_identity_doc.dart';
 import 'steps/step4_ssc_info.dart';

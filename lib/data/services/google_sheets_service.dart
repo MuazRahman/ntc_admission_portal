@@ -30,16 +30,18 @@ class GoogleSheetsService {
         final data = json.decode(response.body);
         if (data['success'] == true) {
           final values = data['data'] as List<dynamic>?;
-          if (values == null) return null;
+          if (values == null) return _cachedStudents;
           _cachedStudents = values.map<List<dynamic>>((row) => List<dynamic>.from(row)).toList();
           print('[SheetsService] Students cached: ${_cachedStudents!.length} rows');
           return _cachedStudents;
         }
       }
-      return null;
+      // Live fetch failed — fall back to last good copy instead of nothing.
+      return _cachedStudents;
     } catch (e) {
       print('[SheetsService] Exception during getStudents: $e');
-      return null;
+      // Network error — fall back to last good copy instead of nothing.
+      return _cachedStudents;
     }
   }
 

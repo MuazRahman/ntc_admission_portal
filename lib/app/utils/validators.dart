@@ -8,15 +8,15 @@ class Validators {
     return null;
   }
 
-  static String? rollNumber(String? value) {
+  static String? phoneNumber(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Roll number is required';
+      return 'Mobile number is required';
     }
     if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
-      return 'Roll number must contain only digits';
+      return 'Mobile number must contain only digits';
     }
-    if (value.trim().length > 5) {
-      return 'Roll number must be 5 digits or less';
+    if (value.trim().length != 11) {
+      return 'Mobile number must be exactly 11 digits';
     }
     return null;
   }

@@ -23,6 +23,14 @@ class NTCApp extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'),
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
+      // Global Bengali fallback: English keeps Inter/Poppins,
+      // Bengali glyphs automatically use bundled SolaimanLipi.
+      builder: (context, child) {
+        return DefaultTextStyle(
+          style: const TextStyle(fontFamilyFallback: ['SolaimanLipi']),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
   }
 }

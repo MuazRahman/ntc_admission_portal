@@ -31,3 +31,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/logo.png
+  fonts:
+    - family: SolaimanLipi
+      fonts:
+        - asset: assets/fonts/SolaimanLipi.ttf
