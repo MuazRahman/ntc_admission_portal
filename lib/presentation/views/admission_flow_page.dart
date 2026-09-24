@@ -128,19 +128,22 @@ class AdmissionFlowPage extends StatelessWidget {
               );
             }),
           ),
-          // Hide the bottom bar while the keyboard is open on Step 0 so
-          // Verify (inside the scroll view, padded above the keyboard)
-          // is the only action. Users can't tap Next instead of Verify.
+          // Keep maximum body space while typing: hide the bottom nav
+          // and footer whenever the keyboard is open on any step.
           Obx(() {
-            final isStep0 = controller.currentStep.value == 0;
             final keyboardOpen =
                 MediaQuery.of(context).viewInsets.bottom > 0;
-            if (isStep0 && keyboardOpen) {
+            if (keyboardOpen) {
               return const SizedBox.shrink();
             }
-            return _buildBottomNav(context, controller, isMobile);
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildBottomNav(context, controller, isMobile),
+                const FooterCredit(),
+              ],
+            );
           }),
-          const FooterCredit(),
         ],
       ),
     );
