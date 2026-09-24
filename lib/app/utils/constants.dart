@@ -8,8 +8,8 @@ class AppConstants {
   // Bilingual Boards List
   static const List<String> boardsBn = [
     'যশোর বোর্ড',
-    'বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড',
-    'বাংলাদেশ কারিগরি শিক্ষা বোর্ড'
+    'মাদ্রাসা বোর্ড',
+    'কারিগরি বোর্ড',
     'ঢাকা বোর্ড',
     'রাজশাহী বোর্ড',
     'কুমিল্লা বোর্ড',
@@ -17,13 +17,13 @@ class AppConstants {
     'বরিশাল বোর্ড',
     'সিলেট বোর্ড',
     'দিনাজপুর বোর্ড',
-    'ময়মনসিংহ বোর্ড'
+    'ময়মনসিংহ বোর্ড',
   ];
 
   static const List<String> boardsEn = [
     'Jashore Board',
-    'Bangladesh Madrasah Education Board',
-    'Bangladesh Technical Education Board',
+    'Madrasah Board',
+    'Technical Education Board',
     'Dhaka Board',
     'Rajshahi Board',
     'Cumilla Board',

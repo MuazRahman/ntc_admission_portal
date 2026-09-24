@@ -221,20 +221,20 @@ class LandingPage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                // Text(
+                                //   'Submit Information',
+                                //   style: GoogleFonts.inter(
+                                //     fontSize: 14,
+                                //     fontWeight: FontWeight.w700,
+                                //   ),
+                                // ),
+                                // const SizedBox(width: 8),
                                 Text(
-                                  'Submit Information',
+                                  'আপনার তথ্য জমা দিন',
                                   style: GoogleFonts.inter(
-                                    fontSize: 17,
+                                    fontSize: 22,
                                     fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '/ তথ্য জমা দিন',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white.withValues(alpha: 0.85),
+                                    color: Colors.white,
                                   ),
                                 ),
                                 const SizedBox(width: 8),

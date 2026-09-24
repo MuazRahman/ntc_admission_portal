@@ -67,12 +67,21 @@ class Validators {
     if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
       return 'Roll number must contain only digits';
     }
+    if (value.trim().length != 6) {
+      return 'Roll number must be exactly 6 digits';
+    }
     return null;
   }
 
   static String? registrationNumber(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Registration number is required';
+    }
+    if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return 'Registration number must contain only digits';
+    }
+    if (value.trim().length != 10) {
+      return 'Registration number must be exactly 10 digits';
     }
     return null;
   }
@@ -91,10 +100,10 @@ class Validators {
     if (!RegExp(r'^[0-9]{4}$').hasMatch(value.trim())) {
       return 'Must be a 4-digit year';
     }
-    final year = int.tryParse(value.trim());
-    if (year == null || year < 1990 || year > 2028) {
-      return 'Year must be between 1990 and 2028';
-    }
+    // final year = int.tryParse(value.trim());
+    // if (year == null || year < 1990 || year > 2028) {
+    //   return 'Year must be between 1990 and 2028';
+    // }
     return null;
   }
 

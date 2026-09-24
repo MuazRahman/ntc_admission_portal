@@ -207,100 +207,100 @@ class Step6UploadSubmit extends StatelessWidget {
       child: Column(
         children: [
           // Header
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: AppColors.headerGradient,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.14),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.2),
-                    ),
-                  ),
-                  child: const Icon(Icons.description, color: Colors.white, size: 19),
-                ),
-                const SizedBox(width: 11),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        isBn ? 'সম্পূর্ণ রিপোর্ট' : 'Full Report',
-                        style: GoogleFonts.poppins(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        isBn ? 'জমা দেওয়ার আগে যাচাই করুন' : 'Review before submit',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: Colors.white.withValues(alpha: 0.65),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   width: double.infinity,
+          //   padding: const EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     gradient: AppColors.headerGradient,
+          //     borderRadius: const BorderRadius.only(
+          //       topLeft: Radius.circular(24),
+          //       topRight: Radius.circular(24),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     children: [
+          //       Container(
+          //         padding: const EdgeInsets.all(9),
+          //         decoration: BoxDecoration(
+          //           color: Colors.white.withValues(alpha: 0.14),
+          //           borderRadius: BorderRadius.circular(12),
+          //           border: Border.all(
+          //             color: Colors.white.withValues(alpha: 0.2),
+          //           ),
+          //         ),
+          //         child: const Icon(Icons.description, color: Colors.white, size: 19),
+          //       ),
+          //       const SizedBox(width: 11),
+          //       Expanded(
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             Text(
+          //               isBn ? 'সম্পূর্ণ রিপোর্ট' : 'Full Report',
+          //               style: GoogleFonts.poppins(
+          //                 fontSize: 17,
+          //                 fontWeight: FontWeight.w700,
+          //                 color: Colors.white,
+          //               ),
+          //             ),
+          //             Text(
+          //               isBn ? 'জমা দেওয়ার আগে যাচাই করুন' : 'Review before submit',
+          //               style: GoogleFonts.inter(
+          //                 fontSize: 12,
+          //                 color: Colors.white.withValues(alpha: 0.65),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
 
           // Report body
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                _buildSectionTitle(isBn ? 'ব্যক্তিগত তথ্য' : 'Personal Info', Icons.person),
-                const SizedBox(height: 8),
-                _buildReportRow('Roll', data.rollNumber),
-                _buildReportRow(isBn ? 'পূর্ণ নাম' : 'Full Name', data.fullName),
-                // _buildReportRow(isBn ? 'বাবার নাম' : "Father's Name", data.fatherName),
-                // _buildReportRow(isBn ? 'মায়ের নাম' : "Mother's Name", data.motherName),
-
-                const Divider(height: 24),
-
-                _buildSectionTitle(isBn ? 'পরিচয়পত্র' : 'Identity Document', Icons.credit_card),
-                const SizedBox(height: 8),
-                _buildReportRow(
-                  isBn ? 'ডকুমেন্ট' : 'Document',
-                  data.identity.documentType.name == 'birthCertificate'
-                      ? (isBn ? 'জন্ম নিবন্ধন' : 'Birth Certificate')
-                      : 'NID',
-                ),
-                _buildReportRow(isBn ? 'নম্বর' : 'Number', data.identity.documentNumber),
-
-                const Divider(height: 24),
-
-                _buildSectionTitle('SSC', Icons.school),
-                const SizedBox(height: 8),
-                _buildReportRow('Roll', data.ssc.roll),
-                _buildReportRow(isBn ? 'রেজিস্ট্রেশন' : 'Registration', data.ssc.registrationNumber),
-                _buildReportRow(isBn ? 'বোর্ড' : 'Board', data.ssc.board),
-                _buildReportRow(isBn ? 'পাসের সাল' : 'Year', data.ssc.passingYear),
-
-                // const Divider(height: 24),
-
-                // _buildSectionTitle('HSC', Icons.account_balance),
-                // const SizedBox(height: 8),
-                // _buildReportRow('Roll', data.hsc.roll),
-                // _buildReportRow(isBn ? 'রেজিস্ট্রেশন' : 'Registration', data.hsc.registrationNumber),
-                // _buildReportRow(isBn ? 'বোর্ড' : 'Board', data.hsc.board),
-                // _buildReportRow(isBn ? 'পাসের সাল' : 'Year', data.hsc.passingYear),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(16),
+          //   child: Column(
+          //     children: [
+          //       _buildSectionTitle(isBn ? 'ব্যক্তিগত তথ্য' : 'Personal Info', Icons.person),
+          //       const SizedBox(height: 8),
+          //       _buildReportRow('Roll', data.rollNumber),
+          //       _buildReportRow(isBn ? 'পূর্ণ নাম' : 'Full Name', data.fullName),
+          //       // _buildReportRow(isBn ? 'বাবার নাম' : "Father's Name", data.fatherName),
+          //       // _buildReportRow(isBn ? 'মায়ের নাম' : "Mother's Name", data.motherName),
+          //
+          //       const Divider(height: 24),
+          //
+          //       _buildSectionTitle(isBn ? 'পরিচয়পত্র' : 'Identity Document', Icons.credit_card),
+          //       const SizedBox(height: 8),
+          //       _buildReportRow(
+          //         isBn ? 'ডকুমেন্ট' : 'Document',
+          //         data.identity.documentType.name == 'birthCertificate'
+          //             ? (isBn ? 'জন্ম নিবন্ধন' : 'Birth Certificate')
+          //             : 'NID',
+          //       ),
+          //       _buildReportRow(isBn ? 'নম্বর' : 'Number', data.identity.documentNumber),
+          //
+          //       const Divider(height: 24),
+          //
+          //       _buildSectionTitle('SSC', Icons.school),
+          //       const SizedBox(height: 8),
+          //       _buildReportRow('Roll', data.ssc.roll),
+          //       _buildReportRow(isBn ? 'রেজিস্ট্রেশন' : 'Registration', data.ssc.registrationNumber),
+          //       _buildReportRow(isBn ? 'বোর্ড' : 'Board', data.ssc.board),
+          //       _buildReportRow(isBn ? 'পাসের সাল' : 'Year', data.ssc.passingYear),
+          //
+          //       // const Divider(height: 24),
+          //
+          //       // _buildSectionTitle('HSC', Icons.account_balance),
+          //       // const SizedBox(height: 8),
+          //       // _buildReportRow('Roll', data.hsc.roll),
+          //       // _buildReportRow(isBn ? 'রেজিস্ট্রেশন' : 'Registration', data.hsc.registrationNumber),
+          //       // _buildReportRow(isBn ? 'বোর্ড' : 'Board', data.hsc.board),
+          //       // _buildReportRow(isBn ? 'পাসের সাল' : 'Year', data.hsc.passingYear),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05);

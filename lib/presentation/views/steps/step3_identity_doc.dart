@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/app_colors.dart';
@@ -18,17 +19,26 @@ class Step3IdentityDoc extends StatefulWidget {
 class _Step3IdentityDocState extends State<Step3IdentityDoc> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _docController;
+  final _docFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
     final controller = Get.find<AdmissionController>();
     _docController = TextEditingController(text: controller.formData.value.identity.documentNumber);
+    // Auto-focus number field when step opens.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_docFocus.hasFocus) _docFocus.requestFocus();
+      Future.delayed(const Duration(milliseconds: 350), () {
+        if (mounted && !_docFocus.hasFocus) _docFocus.requestFocus();
+      });
+    });
   }
 
   @override
   void dispose() {
     _docController.dispose();
+    _docFocus.dispose();
     super.dispose();
   }
 
@@ -76,20 +86,14 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                           // Reset visible validation state so the empty field
                           // shows "required" instead of a stale error.
                           _formKey.currentState?.reset();
+                          // Keep typing flow: focus number field after type switch.
+                          Future.delayed(const Duration(milliseconds: 100), () {
+                            if (mounted) _docFocus.requestFocus();
+                          });
                         }
 
                         return Row(
                           children: [
-                            Expanded(
-                              child: _buildTypeCard(
-                                context: context,
-                                icon: Icons.child_care,
-                                title: 'step3_birth_cert'.tr,
-                                isSelected: selectedType == DocumentType.birthCertificate,
-                                onTap: () => switchType(DocumentType.birthCertificate),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
                             Expanded(
                               child: _buildTypeCard(
                                 context: context,
@@ -99,6 +103,16 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                                 onTap: () => switchType(DocumentType.nid),
                               ),
                             ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _buildTypeCard(
+                                context: context,
+                                icon: Icons.child_care,
+                                title: 'step3_birth_cert'.tr,
+                                isSelected: selectedType == DocumentType.birthCertificate,
+                                onTap: () => switchType(DocumentType.birthCertificate),
+                              ),
+                            ),
                           ],
                         );
                       }),
@@ -106,11 +120,21 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                       Obx(() {
                         final isBC = controller.formData.value.identity.documentType == DocumentType.birthCertificate;
                         return CustomTextField(
+                          // Key forces rebuild so maxLength/validator swap cleanly.
+                          key: ValueKey(isBC ? 'bc' : 'nid'),
                           label: isBC ? 'step3_birth_cert'.tr : 'step3_nid'.tr,
                           hint: isBC ? 'step3_bc_hint'.tr : 'step3_nid_hint'.tr,
                           controller: _docController,
                           validator: isBC ? Validators.birthCertificate : Validators.nid,
                           keyboardType: TextInputType.number,
+                          focusNode: _docFocus,
+                          autofocus: true,
+                          textInputAction: TextInputAction.done,
+                          maxLength: isBC ? 17 : 10,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(isBC ? 17 : 10),
+                          ],
                           prefix: Container(
                             margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.all(8),

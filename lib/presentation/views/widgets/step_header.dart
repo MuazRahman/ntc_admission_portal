@@ -26,30 +26,6 @@ class StepHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(color: AppColors.divider, width: 1.5),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.ntcBlue.withValues(alpha: 0.14),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: ClipOval(
-            child: Image.asset(
-              'assets/logo.png',
-              width: isMobile ? 58 : 76,
-              height: isMobile ? 58 : 76,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        SizedBox(height: isMobile ? 16 : 20),
-        Container(
           width: double.infinity,
           padding: EdgeInsets.all(isMobile ? 18 : 24),
           decoration: BoxDecoration(

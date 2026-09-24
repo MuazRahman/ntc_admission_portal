@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/app_colors.dart';
 
@@ -17,6 +18,9 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onFieldSubmitted;
+  final bool autofocus;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -34,6 +38,9 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.autofocus = false,
+    this.maxLength,
+    this.inputFormatters,
   });
 
   @override
@@ -75,6 +82,12 @@ class CustomTextField extends StatelessWidget {
             focusNode: focusNode,
             textInputAction: textInputAction,
             onFieldSubmitted: onFieldSubmitted,
+            autofocus: autofocus,
+            maxLength: maxLength,
+            maxLengthEnforcement: maxLength != null
+                ? MaxLengthEnforcement.enforced
+                : null,
+            inputFormatters: inputFormatters,
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -120,6 +133,7 @@ class CustomTextField extends StatelessWidget {
                 borderSide: const BorderSide(color: AppColors.errorColor, width: 1.8),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              counterText: '',
               errorStyle: GoogleFonts.inter(
                 fontSize: 13,
                 color: AppColors.errorColor,

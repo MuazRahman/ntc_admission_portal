@@ -5,7 +5,7 @@ class IdentityModel {
   final String documentNumber;
 
   const IdentityModel({
-    this.documentType = DocumentType.birthCertificate,
+    this.documentType = DocumentType.nid,
     this.documentNumber = '',
   });
 

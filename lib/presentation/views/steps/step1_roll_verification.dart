@@ -26,6 +26,18 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
   void initState() {
     super.initState();
     _rollController.addListener(_onTextChanged);
+    // Auto-focus roll field + pop keyboard when screen opens.
+    // Route transition steals focus, so retry after it settles.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_rollFocus.hasFocus) {
+        _rollFocus.requestFocus();
+      }
+      Future.delayed(const Duration(milliseconds: 700), () {
+        if (mounted && !_rollFocus.hasFocus) {
+          _rollFocus.requestFocus();
+        }
+      });
+    });
     // When keyboard opens, scroll Verify button into view above keyboard.
     _rollFocus.addListener(() {
       if (_rollFocus.hasFocus) {
@@ -122,6 +134,7 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                         validator: Validators.rollNumber,
                         keyboardType: TextInputType.number,
                         focusNode: _rollFocus,
+                        autofocus: true,
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (_) {
                           if (!controller.isLoading.value &&

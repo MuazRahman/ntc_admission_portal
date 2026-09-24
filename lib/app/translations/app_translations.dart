@@ -132,8 +132,8 @@ class AppTranslations extends Translations {
           'landing_description': 'রোল-ভিত্তিক অনলাইন তথ্য ফর্ম',
 
           // Step 1 - Roll Verification
-          'step1_title': 'রোল যাচাই',
-          'step1_subtitle': 'আপনার রোল নম্বর যাচাই করুন',
+          'step1_title': 'রোল যাচাই করুন',
+          'step1_subtitle': 'নিচের বক্সে আপনার রোল নাম্বার দিন।',
           'step1_roll_hint': 'রোল নম্বর দিন',
           'step1_name_label': 'পূর্ণ নাম',
           'step1_name_readonly': '(রেকর্ড থেকে যাচাইকৃত)',
@@ -152,7 +152,7 @@ class AppTranslations extends Translations {
 
           // Step 3 - Identity
           'step3_title': 'পরিচয়পত্র',
-          'step3_subtitle': 'ডকুমেন্টের ধরন নির্বাচন করুন এবং নম্বর প্রবেশ করুন',
+          'step3_subtitle': 'আপনার জাতীয় পরিচয় পত্র অথবা জন্ম নিবন্ধনের তথ্য দিন',
           'step3_birth_cert': 'জন্ম নিবন্ধন',
           'step3_nid': 'জাতীয় পরিচয়পত্র',
           'step3_bc_hint': '১৭ অঙ্কের জন্ম নিবন্ধন নম্বর',
@@ -160,7 +160,7 @@ class AppTranslations extends Translations {
 
           // Step 4 - SSC
           'step4_title': 'এসএসসি তথ্য',
-          'step4_subtitle': 'আপনার এসএসসি পরীক্ষার তথ্য প্রবেশ করুন',
+          'step4_subtitle': 'নিচের বক্সগুলোতে সতর্কভাবে আপনার এসএসসি পরীক্ষার তথ্য দিন',
           'step4_roll_hint': 'এসএসসি রোল নম্বর',
           'step4_reg_hint': 'রেজিস্ট্রেশন নম্বর',
           'step4_board_hint': 'বোর্ড নির্বাচন করুন',
