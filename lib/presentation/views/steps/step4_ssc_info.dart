@@ -47,7 +47,14 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          padding: EdgeInsets.fromLTRB(
+            16,
+            12,
+            16,
+            // Lift content above the keyboard (which now overlays
+            // the bottom nav instead of squeezing the body).
+            24 + MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Form(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(

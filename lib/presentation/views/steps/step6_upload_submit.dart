@@ -21,7 +21,14 @@ class Step6UploadSubmit extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 720),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          padding: EdgeInsets.fromLTRB(
+            16,
+            12,
+            16,
+            // Lift content above the keyboard (which now overlays
+            // the bottom nav instead of squeezing the body).
+            24 + MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

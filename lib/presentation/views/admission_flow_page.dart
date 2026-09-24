@@ -25,9 +25,10 @@ class AdmissionFlowPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
-      // Shrink body above keyboard so Verify stays visible instead of
-      // being covered by the bottom bar.
-      resizeToAvoidBottomInset: true,
+      // Body keeps full height; the keyboard overlays the bottom nav
+      // instead of squeezing the form. Each step pads its scroll view
+      // with viewInsets.bottom so fields stay reachable above it.
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(64),
         child: Container(
@@ -128,22 +129,10 @@ class AdmissionFlowPage extends StatelessWidget {
               );
             }),
           ),
-          // Keep maximum body space while typing: hide the bottom nav
-          // and footer whenever the keyboard is open on any step.
-          Obx(() {
-            final keyboardOpen =
-                MediaQuery.of(context).viewInsets.bottom > 0;
-            if (keyboardOpen) {
-              return const SizedBox.shrink();
-            }
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildBottomNav(context, controller, isMobile),
-                const FooterCredit(),
-              ],
-            );
-          }),
+          // Bottom nav + footer stay pinned; the open keyboard simply
+          // overlays them while the body keeps its full size.
+          _buildBottomNav(context, controller, isMobile),
+          const FooterCredit(),
         ],
       ),
     );
