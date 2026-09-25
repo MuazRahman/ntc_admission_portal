@@ -2,6 +2,7 @@ import 'identity_model.dart';
 import 'ssc_model.dart';
 import 'hsc_model.dart';
 
+/// Whole admission form state; immutable, updated via copyWith.
 class AdmissionModel {
   final String rollNumber;
   final String fullName;
@@ -29,6 +30,7 @@ class AdmissionModel {
     this.referenceNumber = '',
   });
 
+  /// Returns a copy with the given fields replaced.
   AdmissionModel copyWith({
     String? rollNumber,
     String? fullName,
@@ -57,6 +59,7 @@ class AdmissionModel {
     );
   }
 
+  /// Serializes to a sheet row (column order must match Apps Script).
   List<dynamic> toSheetRow() {
     return [
       referenceNumber,

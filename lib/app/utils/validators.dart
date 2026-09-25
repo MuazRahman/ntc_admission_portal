@@ -1,3 +1,4 @@
+/// Field validators shared by every form step.
 class Validators {
   Validators._();
 
@@ -100,10 +101,6 @@ class Validators {
     if (!RegExp(r'^[0-9]{4}$').hasMatch(value.trim())) {
       return 'Must be a 4-digit year';
     }
-    // final year = int.tryParse(value.trim());
-    // if (year == null || year < 1990 || year > 2028) {
-    //   return 'Year must be between 1990 and 2028';
-    // }
     return null;
   }
 

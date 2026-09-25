@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Holds the EN/BN choice, applies it app-wide, and persists it.
 class LanguageController extends GetxController {
   final currentLocale = const Locale('bn', 'BD').obs;
 
@@ -11,6 +12,7 @@ class LanguageController extends GetxController {
     _loadSavedLocale();
   }
 
+  /// Switches between Bengali and English.
   void toggleLanguage() {
     if (currentLocale.value.languageCode == 'bn') {
       _setLocale(const Locale('en', 'US'));
@@ -38,5 +40,6 @@ class LanguageController extends GetxController {
     await prefs.setString('countryCode', locale.countryCode ?? '');
   }
 
+  /// True when Bengali is the active locale.
   bool get isBn => currentLocale.value.languageCode == 'bn';
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/validators.dart';
 import '../../../data/models/identity_model.dart';
@@ -9,6 +10,7 @@ import '../../controllers/admission_controller.dart';
 import '../widgets/step_header.dart';
 import '../widgets/custom_text_field.dart';
 
+/// Step 3: NID / birth-certificate selection + number entry.
 class Step3IdentityDoc extends StatefulWidget {
   const Step3IdentityDoc({super.key});
 
@@ -25,7 +27,9 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
   void initState() {
     super.initState();
     final controller = Get.find<AdmissionController>();
-    _docController = TextEditingController(text: controller.formData.value.identity.documentNumber);
+    _docController = TextEditingController(
+      text: controller.formData.value.identity.documentNumber,
+    );
     // Auto-focus number field when step opens.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && !_docFocus.hasFocus) _docFocus.requestFocus();
@@ -83,7 +87,8 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Obx(() {
-                        final selectedType = controller.formData.value.identity.documentType;
+                        final selectedType =
+                            controller.formData.value.identity.documentType;
                         void switchType(DocumentType newType) {
                           if (selectedType == newType) return;
                           // Never carry over the old type's number (e.g. 10-digit
@@ -116,8 +121,11 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                                 context: context,
                                 icon: Icons.child_care,
                                 title: 'step3_birth_cert'.tr,
-                                isSelected: selectedType == DocumentType.birthCertificate,
-                                onTap: () => switchType(DocumentType.birthCertificate),
+                                isSelected:
+                                    selectedType ==
+                                    DocumentType.birthCertificate,
+                                onTap: () =>
+                                    switchType(DocumentType.birthCertificate),
                               ),
                             ),
                           ],
@@ -125,14 +133,18 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                       }),
                       const SizedBox(height: 18),
                       Obx(() {
-                        final isBC = controller.formData.value.identity.documentType == DocumentType.birthCertificate;
+                        final isBC =
+                            controller.formData.value.identity.documentType ==
+                            DocumentType.birthCertificate;
                         return CustomTextField(
                           // Key forces rebuild so maxLength/validator swap cleanly.
                           key: ValueKey(isBC ? 'bc' : 'nid'),
                           label: isBC ? 'step3_birth_cert'.tr : 'step3_nid'.tr,
                           hint: isBC ? 'step3_bc_hint'.tr : 'step3_nid_hint'.tr,
                           controller: _docController,
-                          validator: isBC ? Validators.birthCertificate : Validators.nid,
+                          validator: isBC
+                              ? Validators.birthCertificate
+                              : Validators.nid,
                           keyboardType: TextInputType.number,
                           focusNode: _docFocus,
                           autofocus: true,
@@ -149,10 +161,17 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                               gradient: AppColors.primaryGradient,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(Icons.numbers, color: Colors.white, size: 18),
+                            child: const Icon(
+                              Icons.numbers,
+                              color: Colors.white,
+                              size: 18,
+                            ),
                           ),
                           onChanged: (v) {
-                            controller.updateIdentity(controller.formData.value.identity.documentType, v);
+                            controller.updateIdentity(
+                              controller.formData.value.identity.documentType,
+                              v,
+                            );
                           },
                         );
                       }),
@@ -193,7 +212,7 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                     color: AppColors.ntcBlue.withValues(alpha: 0.3),
                     blurRadius: 14,
                     offset: const Offset(0, 6),
-                  )
+                  ),
                 ]
               : null,
         ),
@@ -209,7 +228,11 @@ class _Step3IdentityDocState extends State<Step3IdentityDoc> {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.check_circle, size: 16, color: Color(0xFF10B981)),
+                  child: const Icon(
+                    Icons.check_circle,
+                    size: 16,
+                    color: Color(0xFF10B981),
+                  ),
                 ),
               ),
             Column(

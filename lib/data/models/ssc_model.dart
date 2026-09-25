@@ -1,3 +1,4 @@
+/// SSC exam details.
 class SSCModel {
   final String roll;
   final String registrationNumber;

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'app/theme/app_theme.dart';
 import 'app/translations/app_translations.dart';
 import 'app/routes/app_pages.dart';
 
+/// App entry: binds the Flutter engine, then launches the root widget.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const NTCApp());
 }
 
+/// Root widget: theme, translations, routes, and Bengali font fallback.
 class NTCApp extends StatelessWidget {
   const NTCApp({super.key});
 

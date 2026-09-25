@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/validators.dart';
 import '../../controllers/admission_controller.dart';
 import '../widgets/step_header.dart';
 import '../widgets/custom_text_field.dart';
 
+/// Parent-info step (not in the active flow): father/mother names.
 class Step2ParentInfo extends StatefulWidget {
   const Step2ParentInfo({super.key});
 
@@ -21,9 +23,14 @@ class _Step2ParentInfoState extends State<Step2ParentInfo> {
   @override
   void initState() {
     super.initState();
+    // Pre-fill from saved data so back-navigation keeps the typed input.
     final controller = Get.find<AdmissionController>();
-    _fatherController = TextEditingController(text: controller.formData.value.fatherName);
-    _motherController = TextEditingController(text: controller.formData.value.motherName);
+    _fatherController = TextEditingController(
+      text: controller.formData.value.fatherName,
+    );
+    _motherController = TextEditingController(
+      text: controller.formData.value.motherName,
+    );
   }
 
   @override
@@ -49,7 +56,7 @@ class _Step2ParentInfoState extends State<Step2ParentInfo> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 30,),
+                const SizedBox(height: 30),
                 StepHeader(
                   title: 'step2_title'.tr,
                   subtitle: 'step2_subtitle'.tr,
@@ -60,8 +67,13 @@ class _Step2ParentInfoState extends State<Step2ParentInfo> {
                   label: 'step2_father_hint'.tr,
                   hint: 'step2_father_hint'.tr,
                   controller: _fatherController,
-                  validator: (v) => Validators.personName(v, 'step2_father_hint'.tr),
-                  prefix: const Icon(Icons.person_outline, color: AppColors.ntcBlue, size: 20),
+                  validator: (v) =>
+                      Validators.personName(v, 'step2_father_hint'.tr),
+                  prefix: const Icon(
+                    Icons.person_outline,
+                    color: AppColors.ntcBlue,
+                    size: 20,
+                  ),
                   onChanged: (v) => controller.updateFatherName(v),
                 ),
                 const SizedBox(height: 16),
@@ -69,8 +81,13 @@ class _Step2ParentInfoState extends State<Step2ParentInfo> {
                   label: 'step2_mother_hint'.tr,
                   hint: 'step2_mother_hint'.tr,
                   controller: _motherController,
-                  validator: (v) => Validators.personName(v, 'step2_mother_hint'.tr),
-                  prefix: const Icon(Icons.person_outline, color: AppColors.ntcRed, size: 20),
+                  validator: (v) =>
+                      Validators.personName(v, 'step2_mother_hint'.tr),
+                  prefix: const Icon(
+                    Icons.person_outline,
+                    color: AppColors.ntcRed,
+                    size: 20,
+                  ),
                   onChanged: (v) => controller.updateMotherName(v),
                 ),
               ],

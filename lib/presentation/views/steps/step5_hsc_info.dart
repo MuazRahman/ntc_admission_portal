@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/validators.dart';
 import '../../../app/utils/constants.dart';
@@ -7,6 +8,7 @@ import '../../controllers/admission_controller.dart';
 import '../widgets/step_header.dart';
 import '../widgets/custom_text_field.dart';
 
+/// HSC step (not in the active flow): mirrors the SSC form.
 class Step5HSCInfo extends StatefulWidget {
   const Step5HSCInfo({super.key});
 
@@ -22,10 +24,15 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
   @override
   void initState() {
     super.initState();
+    // Pre-fill from saved data so back-navigation keeps the typed input.
     final controller = Get.find<AdmissionController>();
     rollCtrl = TextEditingController(text: controller.formData.value.hsc.roll);
-    regCtrl = TextEditingController(text: controller.formData.value.hsc.registrationNumber);
-    yearCtrl = TextEditingController(text: controller.formData.value.hsc.passingYear);
+    regCtrl = TextEditingController(
+      text: controller.formData.value.hsc.registrationNumber,
+    );
+    yearCtrl = TextEditingController(
+      text: controller.formData.value.hsc.passingYear,
+    );
   }
 
   @override
@@ -81,7 +88,9 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
           validator: Validators.sscHscRoll,
           keyboardType: TextInputType.number,
           onChanged: (v) {
-            controller.updateHSC(controller.formData.value.hsc.copyWith(roll: v));
+            controller.updateHSC(
+              controller.formData.value.hsc.copyWith(roll: v),
+            );
           },
         ),
         const SizedBox(height: 16),
@@ -91,7 +100,9 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
           controller: regCtrl,
           validator: Validators.registrationNumber,
           onChanged: (v) {
-            controller.updateHSC(controller.formData.value.hsc.copyWith(registrationNumber: v));
+            controller.updateHSC(
+              controller.formData.value.hsc.copyWith(registrationNumber: v),
+            );
           },
         ),
         const SizedBox(height: 16),
@@ -104,10 +115,12 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
           validator: Validators.passingYear,
           keyboardType: TextInputType.number,
           onChanged: (v) {
-            controller.updateHSC(controller.formData.value.hsc.copyWith(passingYear: v));
+            controller.updateHSC(
+              controller.formData.value.hsc.copyWith(passingYear: v),
+            );
           },
         ),
-        ],
+      ],
     );
   }
 
@@ -118,10 +131,7 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
       children: [
         Text(
           'step5_board_hint'.tr,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
@@ -134,17 +144,29 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
             fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.inputBorder,
+                width: 1.5,
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.inputBorder,
+                width: 1.5,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: AppColors.ntcBlue, width: 1.8),
+              borderSide: const BorderSide(
+                color: AppColors.ntcBlue,
+                width: 1.8,
+              ),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
           ),
           items: boards.map((String board) {
             return DropdownMenuItem<String>(
@@ -154,7 +176,9 @@ class _Step5HSCInfoState extends State<Step5HSCInfo> {
           }).toList(),
           onChanged: (String? value) {
             if (value != null) {
-              controller.updateHSC(controller.formData.value.hsc.copyWith(board: value));
+              controller.updateHSC(
+                controller.formData.value.hsc.copyWith(board: value),
+              );
             }
           },
           validator: (value) => Validators.board(value),

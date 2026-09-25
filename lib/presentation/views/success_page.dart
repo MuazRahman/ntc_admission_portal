@@ -1,198 +1,189 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../app/theme/app_colors.dart';
-import '../../app/utils/responsive.dart';
 import '../../app/routes/app_routes.dart';
+import 'widgets/step_header.dart';
+import 'widgets/gradient_button.dart';
 import 'widgets/footer_credit.dart';
 
+/// Confirmation screen shown after a successful submission.
 class SuccessPage extends StatelessWidget {
   const SuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
     final args = Get.arguments as Map<String, dynamic>? ?? {};
-    final referenceNumber = args['referenceNumber'] as String? ?? 'N/A';
-    final studentName = args['studentName'] as String? ?? '';
+    final studentName = (args['studentName'] as String? ?? '').trim();
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF43A047)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: isMobile ? 24 : 48,
-                vertical: 32,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.check_circle_outline,
-                      size: 80,
-                      color: Colors.white,
-                    ),
-                  ).animate().scale(duration: 500.ms, curve: Curves.easeOutBack),
-                  const SizedBox(height: 24),
-                  if (studentName.isNotEmpty)
-                    Text(
-                      '$studentName,',
-                      style: TextStyle(
-                        fontSize: isMobile ? 18 : 22,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ).animate().fadeIn(delay: 200.ms),
-                  const SizedBox(height: 4),
-                  Text(
-                    'আপনার তথ্য সফলভাবে জমা হয়েছে।',
-                    style: TextStyle(
-                      fontSize: isMobile ? 16 : 20,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white.withValues(alpha: 0.9),
-                    ),
-                  ).animate().fadeIn(delay: 250.ms),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Successfully Submitted!',
-                    style: TextStyle(
-                      fontSize: isMobile ? 13 : 16,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white.withValues(alpha: 0.7),
-                    ),
-                  ).animate().fadeIn(delay: 300.ms),
-                  const SizedBox(height: 32),
-                  Container(
-                    width: isMobile ? double.infinity : 420,
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.15),
-                          blurRadius: 24,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
+      body: SafeArea(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        StepHeader(
+                              title: 'success_title'.tr,
+                              subtitle: 'success_title_bn'.tr,
+                              icon: Icons.task_alt_rounded,
+                            )
+                            .animate()
+                            .fadeIn(duration: 350.ms)
+                            .slideY(begin: 0.08),
+
+                        const SizedBox(height: 18),
+
+                        // Main card — same white card pattern as the steps:
+                        // white, radius 24, divider border, soft shadow.
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            color: AppColors.ntcGreen.withValues(alpha: 0.1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.receipt_long,
-                            size: 40,
-                            color: AppColors.ntcGreen,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'Your Roll Number',
-                          style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: AppColors.ntcBlack.withValues(alpha: 0.05),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            referenceNumber,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.ntcBlack,
-                              letterSpacing: 2,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                              color: AppColors.divider,
+                              width: 1,
                             ),
+                            boxShadow: AppColors.softShadow,
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: AppColors.ntcBlue.withValues(alpha: 0.06),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Column(
                             children: [
-                              Icon(Icons.info_outline, size: 16, color: AppColors.ntcBlue),
-                              SizedBox(width: 8),
+                              // Success mark — same emerald treatment as the
+                              // verified-student card in Step 1.
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.ntcGreen.withValues(
+                                    alpha: 0.08,
+                                  ),
+                                  border: Border.all(
+                                    color: AppColors.ntcGreen.withValues(
+                                      alpha: 0.2,
+                                    ),
+                                  ),
+                                ),
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    gradient: AppColors.successGradient,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.ntcGreen.withValues(
+                                          alpha: 0.35,
+                                        ),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 8),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(
+                                    Icons.check_rounded,
+                                    size: 48,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ).animate().scale(
+                                duration: 500.ms,
+                                curve: Curves.easeOutBack,
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              // Status pill — mirrors the "OK" pill in Step 1.
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: AppColors.successGradient,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Text(
+                                  'success'.tr.toUpperCase(),
+                                  style: GoogleFonts.inter(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(height: 12),
+
+                              if (studentName.isNotEmpty) ...[
+                                Text(
+                                  studentName,
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                    height: 1.3,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                              ],
+
                               Text(
-                                'Please save your roll number',
-                                style: TextStyle(fontSize: 12, color: AppColors.ntcBlue),
+                                'success_title_bn'.tr,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                  height: 1.5,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'success_title'.tr,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.textSecondary,
+                                ),
                               ),
                             ],
                           ),
-                        ),
+                        ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.06),
+
+                        const SizedBox(height: 20),
+
+                        GradientButton(
+                          text: 'success_home_button'.tr,
+                          gradient: AppColors.buttonGradient,
+                          icon: Icons.home_outlined,
+                          onPressed: () => Get.offAllNamed(AppRoutes.landing),
+                        ).animate().fadeIn(delay: 150.ms).slideY(begin: 0.1),
                       ],
                     ),
-                  ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.15),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: isMobile ? double.infinity : 340,
-                    height: 54,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () => Get.offAllNamed(AppRoutes.landing),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: AppColors.ntcGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.home, size: 20),
-                            SizedBox(width: 8),
-                            Text(
-                              'Back to Home / হোমে ফিরুন',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ).animate().fadeIn(delay: 600.ms),
-                  const SizedBox(height: 20),
-                  const FooterCredit(dark: true),
-                ],
-              ),
+                  ),
+                ),
+
+                // Pinned footer — stays at the bottom of the screen with
+                // breathing room above the bottom edge, instead of sticking
+                // to the end of the scroll content.
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 4, 16, 20),
+                  child: Center(child: FooterCredit()),
+                ),
+              ],
             ),
           ),
         ),

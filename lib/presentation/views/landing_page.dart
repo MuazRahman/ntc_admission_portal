@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../app/theme/app_colors.dart';
+
 import '../../../app/utils/responsive.dart';
 import '../../../app/routes/app_routes.dart';
 import '../controllers/admission_controller.dart';
 import 'widgets/footer_credit.dart';
 
+/// Entry screen: branding + CTA into the admission flow.
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
@@ -76,13 +77,18 @@ class LandingPage extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: const LinearGradient(
-                            colors: [Color(0xFFA5B4FC), Color(0xFF8B5CF6), Color(0xFF06B6D4)],
+                            colors: [
+                              Color(0xFFA5B4FC),
+                              Color(0xFF8B5CF6),
+                              Color(0xFF06B6D4),
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF8B5CF6).withValues(alpha: 0.45),
+                              color: const Color(0xFF8B5CF6)
+                                  .withValues(alpha: 0.45),
                               blurRadius: 32,
                               spreadRadius: 2,
                             ),
@@ -103,13 +109,19 @@ class LandingPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
+                      ).animate().scale(
+                        duration: 600.ms,
+                        curve: Curves.easeOutBack,
+                      ),
 
                       const SizedBox(height: 28),
 
                       // Pill badge
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(100),
@@ -175,7 +187,6 @@ class LandingPage extends StatelessWidget {
 
                       const SizedBox(height: 8),
 
-
                       const SizedBox(height: 36),
 
                       // CTA Button with shine
@@ -195,7 +206,8 @@ class LandingPage extends StatelessWidget {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF8B5CF6).withValues(alpha: 0.45),
+                                color: const Color(0xFF8B5CF6)
+                                    .withValues(alpha: 0.45),
                                 blurRadius: 24,
                                 offset: const Offset(0, 10),
                               ),
@@ -217,19 +229,13 @@ class LandingPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 28),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 28,
+                              ),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Text(
-                                //   'Submit Information',
-                                //   style: GoogleFonts.inter(
-                                //     fontSize: 14,
-                                //     fontWeight: FontWeight.w700,
-                                //   ),
-                                // ),
-                                // const SizedBox(width: 8),
                                 Text(
                                   'আপনার তথ্য জমা দিন',
                                   style: GoogleFonts.inter(
@@ -259,8 +265,6 @@ class LandingPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       const FooterCredit(dark: true),
                       const SizedBox(height: 8),
-
-
                     ],
                   ),
                 ),
@@ -276,75 +280,7 @@ class LandingPage extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-    );
-  }
-
-  Widget _trustChip(IconData icon, String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.07),
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: Colors.white.withValues(alpha: 0.8)),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Colors.white.withValues(alpha: 0.75),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureCard(IconData icon, String title, String subtitle) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: AppColors.cyanSoft, size: 22),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Colors.white.withValues(alpha: 0.5),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
 }

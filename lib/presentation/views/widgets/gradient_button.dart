@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../app/theme/app_colors.dart';
 
+/// Full-width gradient button (purple default, green for success actions).
 class GradientButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -27,9 +29,7 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: gradient ?? AppColors.buttonGradient,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.22),
-        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.22)),
         boxShadow: [
           BoxShadow(
             color: (isSuccess ? AppColors.ntcGreen : AppColors.ntcBlue)

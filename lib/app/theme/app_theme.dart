@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'app_colors.dart';
 
+/// Material 3 light theme built from AppColors + Google Fonts.
 class AppTheme {
   AppTheme._();
 
@@ -75,11 +77,17 @@ class AppTheme {
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.inputBorder,
+            width: 1.5,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.inputBorder,
+            width: 1.5,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -93,11 +101,11 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppColors.errorColor, width: 1.8),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: GoogleFonts.inter(
-          fontSize: 15,
-          color: AppColors.textHint,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
         ),
+        hintStyle: GoogleFonts.inter(fontSize: 15, color: AppColors.textHint),
         labelStyle: GoogleFonts.inter(
           fontSize: 14,
           color: AppColors.textSecondary,

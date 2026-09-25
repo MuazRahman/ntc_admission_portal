@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 enum DeviceType { mobile, tablet, desktop, largeDesktop }
 
+/// Width breakpoints + helpers used to adapt layouts per device.
 class Responsive {
   Responsive._();
 

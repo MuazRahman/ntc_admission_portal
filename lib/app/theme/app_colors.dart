@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Brand palette, gradients, surfaces, and shared shadow presets.
 class AppColors {
   AppColors._();
 
@@ -75,26 +76,26 @@ class AppColors {
 
   // === Shared decorations ===
   static List<BoxShadow> get softShadow => [
-        BoxShadow(
-          color: const Color(0xFF0F172A).withValues(alpha: 0.06),
-          blurRadius: 16,
-          offset: const Offset(0, 6),
-        ),
-      ];
+    BoxShadow(
+      color: const Color(0xFF0F172A).withValues(alpha: 0.06),
+      blurRadius: 16,
+      offset: const Offset(0, 6),
+    ),
+  ];
 
   static List<BoxShadow> get coloredShadow => [
-        BoxShadow(
-          color: ntcBlue.withValues(alpha: 0.28),
-          blurRadius: 18,
-          offset: const Offset(0, 8),
-        ),
-      ];
+    BoxShadow(
+      color: ntcBlue.withValues(alpha: 0.28),
+      blurRadius: 18,
+      offset: const Offset(0, 8),
+    ),
+  ];
 
   static List<BoxShadow> get successShadow => [
-        BoxShadow(
-          color: ntcGreen.withValues(alpha: 0.25),
-          blurRadius: 16,
-          offset: const Offset(0, 6),
-        ),
-      ];
+    BoxShadow(
+      color: ntcGreen.withValues(alpha: 0.25),
+      blurRadius: 16,
+      offset: const Offset(0, 6),
+    ),
+  ];
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/validators.dart';
 import '../../../app/utils/constants.dart';
@@ -9,6 +10,7 @@ import '../../controllers/admission_controller.dart';
 import '../widgets/step_header.dart';
 import '../widgets/custom_text_field.dart';
 
+/// Step 4: SSC exam details + board picker.
 class Step4SSCInfo extends StatefulWidget {
   const Step4SSCInfo({super.key});
 
@@ -26,8 +28,12 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
     super.initState();
     final controller = Get.find<AdmissionController>();
     rollCtrl = TextEditingController(text: controller.formData.value.ssc.roll);
-    regCtrl = TextEditingController(text: controller.formData.value.ssc.registrationNumber);
-    yearCtrl = TextEditingController(text: controller.formData.value.ssc.passingYear);
+    regCtrl = TextEditingController(
+      text: controller.formData.value.ssc.registrationNumber,
+    );
+    yearCtrl = TextEditingController(
+      text: controller.formData.value.ssc.passingYear,
+    );
   }
 
   @override
@@ -103,7 +109,9 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
               LengthLimitingTextInputFormatter(6),
             ],
             onChanged: (v) {
-              controller.updateSSC(controller.formData.value.ssc.copyWith(roll: v));
+              controller.updateSSC(
+                controller.formData.value.ssc.copyWith(roll: v),
+              );
             },
           ),
           const SizedBox(height: 16),
@@ -119,7 +127,9 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
               LengthLimitingTextInputFormatter(10),
             ],
             onChanged: (v) {
-              controller.updateSSC(controller.formData.value.ssc.copyWith(registrationNumber: v));
+              controller.updateSSC(
+                controller.formData.value.ssc.copyWith(registrationNumber: v),
+              );
             },
           ),
           const SizedBox(height: 16),
@@ -137,29 +147,11 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
               LengthLimitingTextInputFormatter(4),
             ],
             onChanged: (v) {
-              controller.updateSSC(controller.formData.value.ssc.copyWith(passingYear: v));
+              controller.updateSSC(
+                controller.formData.value.ssc.copyWith(passingYear: v),
+              );
             },
           ),
-          // Obx(() => CheckboxListTile(
-          //   value: controller.formData.value.hscComplete,
-          //   onChanged: (v) {
-          //     controller.formData.value = controller.formData.value.copyWith(
-          //       hscComplete: v ?? true,
-          //     );
-          //   },
-          //   controlAffinity: ListTileControlAffinity.leading,
-          //   contentPadding: EdgeInsets.zero,
-          //   title: Text(
-          //     'step4_hsc_complete'.tr,
-          //     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          //   ),
-          //   subtitle: Text(
-          //     'step4_hsc_complete_hint'.tr,
-          //     style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-          //   ),
-          //   activeColor: AppColors.ntcGreen,
-          //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          // )),
         ],
       ),
     );
@@ -200,7 +192,9 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: hasError ? AppColors.errorColor : AppColors.inputBorder,
+                      color: hasError
+                          ? AppColors.errorColor
+                          : AppColors.inputBorder,
                       width: hasError ? 1.5 : 1.5,
                     ),
                     boxShadow: [
@@ -220,8 +214,11 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                           gradient: AppColors.primaryGradient,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.account_balance,
-                            color: Colors.white, size: 18),
+                        child: const Icon(
+                          Icons.account_balance,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
@@ -238,8 +235,10 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                           ),
                         ),
                       ),
-                      const Icon(Icons.arrow_drop_down,
-                          color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.textSecondary,
+                      ),
                     ],
                   ),
                 ),
@@ -271,9 +270,7 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
   ) {
     Get.dialog(
       Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 480, maxHeight: 520),
@@ -296,8 +293,10 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                     ),
                     IconButton(
                       onPressed: () => Get.back(),
-                      icon: const Icon(Icons.close,
-                          color: AppColors.textSecondary),
+                      icon: const Icon(
+                        Icons.close,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -315,21 +314,21 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                     return GestureDetector(
                       onTap: () {
                         controller.updateSSC(
-                          controller.formData.value.ssc
-                              .copyWith(board: board),
+                          controller.formData.value.ssc.copyWith(board: board),
                         );
                         Get.back();
                       },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 180),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 14),
+                          horizontal: 14,
+                          vertical: 14,
+                        ),
                         decoration: BoxDecoration(
-                          gradient:
-                              isSelected ? AppColors.primaryGradient : null,
-                          color: isSelected
-                              ? null
-                              : const Color(0xFFE5E7EB),
+                          gradient: isSelected
+                              ? AppColors.primaryGradient
+                              : null,
+                          color: isSelected ? null : const Color(0xFFE5E7EB),
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
                             color: isSelected
@@ -340,8 +339,9 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                           boxShadow: isSelected
                               ? [
                                   BoxShadow(
-                                    color: AppColors.ntcBlue
-                                        .withValues(alpha: 0.28),
+                                    color: AppColors.ntcBlue.withValues(
+                                      alpha: 0.28,
+                                    ),
                                     blurRadius: 12,
                                     offset: const Offset(0, 5),
                                   ),
@@ -387,8 +387,11 @@ class _Step4SSCInfoState extends State<Step4SSCInfo> {
                               ),
                             ),
                             if (isSelected)
-                              const Icon(Icons.check_circle,
-                                  size: 20, color: Colors.white),
+                              const Icon(
+                                Icons.check_circle,
+                                size: 20,
+                                color: Colors.white,
+                              ),
                           ],
                         ),
                       ),

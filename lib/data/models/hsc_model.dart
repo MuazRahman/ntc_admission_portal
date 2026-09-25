@@ -1,3 +1,4 @@
+/// HSC exam details.
 class HSCModel {
   final String roll;
   final String registrationNumber;

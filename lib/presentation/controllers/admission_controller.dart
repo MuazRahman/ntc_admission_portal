@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../../data/models/admission_model.dart';
 import '../../data/models/identity_model.dart';
 import '../../data/models/ssc_model.dart';
@@ -8,6 +9,7 @@ import '../../app/utils/helpers.dart';
 import '../../app/utils/validators.dart';
 import '../../app/theme/app_colors.dart';
 
+/// Form state + flow logic: verification, step guards, and submission.
 class AdmissionController extends GetxController {
   final AdmissionRepository _repository;
 
@@ -30,19 +32,31 @@ class AdmissionController extends GetxController {
   bool get canGoBack => currentStep.value > 0;
   bool get isLastStep => currentStep.value == totalSteps - 1;
 
+  /// Advances one step. Verification happens only in the Verify button —
+  /// Next never re-verifies: a verified number goes straight to the next page.
   void nextStep() {
-    if (!canGoNext) return;
-    
+    if (!canGoNext || isLoading.value) return;
+
     // Validate current step before advancing
     if (!_validateCurrentStep()) return;
-    
+
     currentStep.value++;
   }
 
   bool _validateCurrentStep() {
     switch (currentStep.value) {
       case 0:
-        // Step 1: Roll must be verified
+        // Step 1: mobile number must be verified and must not be already submitted.
+        if (alreadySubmitted.value) {
+          Get.snackbar(
+            'error'.tr,
+            'step1_already_submitted'.tr,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
+            colorText: AppColors.ntcRed,
+          );
+          return false;
+        }
         if (!isRollVerified.value) {
           Get.snackbar(
             'error'.tr,
@@ -64,7 +78,10 @@ class AdmissionController extends GetxController {
         if (docError != null) {
           Get.snackbar(
             'error'.tr,
-            _localizedIdentityError(identity.documentType, identity.documentNumber),
+            _localizedIdentityError(
+              identity.documentType,
+              identity.documentNumber,
+            ),
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
             colorText: AppColors.ntcRed,
@@ -130,18 +147,22 @@ class AdmissionController extends GetxController {
 
     final result = await _repository.verifyRoll(rollNumber.trim());
 
+    // Submissions sheet is the source of truth: a roll found there is
+    // blocked from any further procedure, roster match or not.
+    if (result.hasSubmission == true) {
+      _markAlreadySubmitted();
+      isLoading.value = false;
+      return;
+    }
+
     if (result.student != null) {
       if (result.hasSubmission == null) {
+        // Roster hit but submission status unknown — never grant permission
+        // on an unchecked roll.
         isRollVerified.value = false;
         verifiedRoll.value = '';
         studentName.value = '';
         rollError.value = 'step1_check_failed'.tr;
-      } else if (result.hasSubmission!) {
-        isRollVerified.value = false;
-        verifiedRoll.value = '';
-        studentName.value = '';
-        alreadySubmitted.value = true;
-        rollError.value = 'step1_already_submitted'.tr;
       } else {
         isRollVerified.value = true;
         verifiedRoll.value = result.student!.rollNumber.trim();
@@ -157,10 +178,25 @@ class AdmissionController extends GetxController {
       verifiedRoll.value = '';
       studentName.value = '';
       alreadySubmitted.value = false;
-      rollError.value = 'step1_not_found'.tr;
+      // No roster row: either unknown roll, or the roster itself failed to
+      // load (students == null) — only claim "not found" when the roster
+      // was actually reachable.
+      rollError.value = result.hasSubmission == null
+          ? 'step1_check_failed'.tr
+          : 'step1_not_found'.tr;
     }
 
     isLoading.value = false;
+  }
+
+  /// Shared reset for every "already submitted" outcome: clears any verified
+  /// identity and raises the blocked banner on step 1.
+  void _markAlreadySubmitted() {
+    isRollVerified.value = false;
+    verifiedRoll.value = '';
+    studentName.value = '';
+    alreadySubmitted.value = true;
+    rollError.value = 'step1_already_submitted'.tr;
   }
 
   /// Call when the roll text field changes after a successful verify.
@@ -207,13 +243,13 @@ class AdmissionController extends GetxController {
   void removeImage() {
     selectedImagePath.value = '';
     imageUrl.value = '';
-    formData.value = formData.value.copyWith(
-      imagePath: null,
-      imageUrl: null,
-    );
+    formData.value = formData.value.copyWith(imagePath: null, imageUrl: null);
   }
 
   Future<void> submitForm() async {
+    // Ignore double-taps while a submission is already in flight —
+    // otherwise two appends could both pass the duplicate guard.
+    if (isLoading.value) return;
     isLoading.value = true;
 
     try {
@@ -238,10 +274,7 @@ class AdmissionController extends GetxController {
       // Student list may be cached, but this call always hits the Sheet.
       final duplicate = await _repository.checkSubmission(roll);
       if (duplicate == true) {
-        isRollVerified.value = false;
-        studentName.value = '';
-        alreadySubmitted.value = true;
-        rollError.value = 'step1_already_submitted'.tr;
+        _markAlreadySubmitted();
         currentStep.value = 0;
         Get.snackbar(
           'error'.tr,
@@ -275,7 +308,10 @@ class AdmissionController extends GetxController {
         currentStep.value = 1;
         Get.snackbar(
           'error'.tr,
-          _localizedIdentityError(identity.documentType, identity.documentNumber),
+          _localizedIdentityError(
+            identity.documentType,
+            identity.documentNumber,
+          ),
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: AppColors.ntcRed.withValues(alpha: 0.1),
           colorText: AppColors.ntcRed,
@@ -295,24 +331,27 @@ class AdmissionController extends GetxController {
           formData.value = formData.value.copyWith(imageUrl: url);
           print('[Controller] Image uploaded: $url');
         } else if (url != null && url.isEmpty) {
-          print('[Controller] Image uploaded to Drive (URL unavailable on web)');
+          print(
+            '[Controller] Image uploaded to Drive (URL unavailable on web)',
+          );
         } else {
           print('[Controller] Image upload failed, submitting without image');
         }
       }
 
       // Generate reference number
-      final refNumber = Helpers.generateReferenceNumber(formData.value.rollNumber);
+      final refNumber = Helpers.generateReferenceNumber(
+        formData.value.rollNumber,
+      );
       formData.value = formData.value.copyWith(referenceNumber: refNumber);
 
       // Submit to Google Sheets
-      final result = await _repository.submitAdmission(formData.value.toSheetRow());
+      final result = await _repository.submitAdmission(
+        formData.value.toSheetRow(),
+      );
 
       if (result.isDuplicate) {
-        isRollVerified.value = false;
-        studentName.value = '';
-        alreadySubmitted.value = true;
-        rollError.value = 'step1_already_submitted'.tr;
+        _markAlreadySubmitted();
         currentStep.value = 0;
         Get.snackbar(
           'error'.tr,
@@ -327,10 +366,13 @@ class AdmissionController extends GetxController {
       if (result.success) {
         final submittedName = formData.value.fullName;
         resetForm();
-        Get.offNamed('/success', arguments: {
-          'referenceNumber': refNumber,
-          'studentName': submittedName,
-        });
+        Get.offNamed(
+          '/success',
+          arguments: {
+            'referenceNumber': refNumber,
+            'studentName': submittedName,
+          },
+        );
       } else {
         Get.snackbar(
           'error'.tr,

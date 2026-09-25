@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/validators.dart';
 import '../../controllers/admission_controller.dart';
 import '../widgets/step_header.dart';
 import '../widgets/custom_text_field.dart';
 
+/// Step 1: mobile-number verification against the student roster.
 class Step1RollVerification extends StatefulWidget {
   const Step1RollVerification({super.key});
 
@@ -60,8 +62,7 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
   void _onTextChanged() {
     if (!mounted) return;
     try {
-      Get.find<AdmissionController>()
-          .onRollTextChanged(_rollController.text);
+      Get.find<AdmissionController>().onRollTextChanged(_rollController.text);
     } catch (_) {}
   }
 
@@ -155,7 +156,11 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                             gradient: AppColors.primaryGradient,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.search, color: Colors.white, size: 18),
+                          child: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            size: 18,
+                          ),
                         ),
                         suffix: Obx(() {
                           if (controller.isRollVerified.value) {
@@ -164,18 +169,27 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    colors: [Color(0xFFF43F5E), Color(0xFFFB7185)],
+                                    colors: [
+                                      Color(0xFFF43F5E),
+                                      Color(0xFFFB7185),
+                                    ],
                                   ),
                                   borderRadius: BorderRadius.circular(100),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors.ntcRed.withValues(alpha: 0.3),
+                                      color: AppColors.ntcRed.withValues(
+                                        alpha: 0.3,
+                                      ),
                                       blurRadius: 8,
                                       offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
-                                child: const Icon(Icons.close, color: Colors.white, size: 15),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 15,
+                                ),
                               ),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
@@ -195,7 +209,8 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                       const SizedBox(height: 6),
                       Obx(() {
                         if (controller.rollError.value.isNotEmpty) {
-                          final isAlreadySubmitted = controller.alreadySubmitted.value;
+                          final isAlreadySubmitted =
+                              controller.alreadySubmitted.value;
                           final bannerColor = isAlreadySubmitted
                               ? const Color(0xFFF59E0B)
                               : AppColors.ntcRed;
@@ -205,7 +220,9 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                             decoration: BoxDecoration(
                               color: bannerColor.withValues(alpha: 0.07),
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: bannerColor.withValues(alpha: 0.22)),
+                              border: Border.all(
+                                color: bannerColor.withValues(alpha: 0.22),
+                              ),
                             ),
                             child: Row(
                               children: [
@@ -250,13 +267,16 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                           decoration: BoxDecoration(
                             gradient: isVerified
                                 ? const LinearGradient(
-                                    colors: [Color(0xFF059669), Color(0xFF065F46)],
+                                    colors: [
+                                      Color(0xFF059669),
+                                      Color(0xFF065F46),
+                                    ],
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                   )
                                 : isLoading
-                                    ? null
-                                    : AppColors.primaryGradient,
+                                ? null
+                                : AppColors.primaryGradient,
                             color: isLoading ? AppColors.ntcBlue : null,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
@@ -264,10 +284,11 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: (isVerified
-                                        ? Color(0xFF059669)
-                                        : AppColors.ntcBlue)
-                                    .withValues(alpha: 0.32),
+                                color:
+                                    (isVerified
+                                            ? Color(0xFF059669)
+                                            : AppColors.ntcBlue)
+                                        .withValues(alpha: 0.32),
                                 blurRadius: 16,
                                 offset: const Offset(0, 8),
                               ),
@@ -296,7 +317,9 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                                         style: GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white.withValues(alpha: 0.9),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.9,
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(width: 4),
@@ -309,18 +332,24 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                                       Container(
                                         padding: const EdgeInsets.all(5),
                                         decoration: BoxDecoration(
-                                          color: Colors.white.withValues(alpha: 0.2),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.2,
+                                          ),
                                           shape: BoxShape.circle,
                                         ),
                                         child: Icon(
-                                          isVerified ? Icons.check_circle : Icons.search,
+                                          isVerified
+                                              ? Icons.check_circle
+                                              : Icons.search,
                                           size: 17,
                                           color: Colors.white,
                                         ),
                                       ),
                                       const SizedBox(width: 9),
                                       Text(
-                                        isVerified ? 'step1_verified'.tr : 'step1_verify'.tr,
+                                        isVerified
+                                            ? 'step1_verified'.tr
+                                            : 'step1_verify'.tr,
                                         style: GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
@@ -363,13 +392,19 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.ntcGreen.withValues(alpha: 0.35),
+                                  color: AppColors.ntcGreen.withValues(
+                                    alpha: 0.35,
+                                  ),
                                   blurRadius: 12,
                                   offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
-                            child: const Icon(Icons.person, color: Colors.white, size: 24),
+                            child: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 24,
+                            ),
                           ),
                           const SizedBox(width: 14),
                           Expanded(
@@ -397,7 +432,10 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 7,
+                            ),
                             decoration: BoxDecoration(
                               gradient: AppColors.successGradient,
                               borderRadius: BorderRadius.circular(100),
@@ -431,14 +469,14 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(3, (index) {
         return Container(
-          width: 7,
-          height: 7,
-          margin: const EdgeInsets.symmetric(horizontal: 2.5),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-        )
+              width: 7,
+              height: 7,
+              margin: const EdgeInsets.symmetric(horizontal: 2.5),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+            )
             .animate(onPlay: (controller) => controller.repeat(reverse: true))
             .fadeIn(
               delay: (index * 200).ms,

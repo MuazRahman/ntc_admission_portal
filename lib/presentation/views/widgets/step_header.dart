@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/responsive.dart';
 
+/// Gradient banner shown atop every form step (title + subtitle + icon).
 class StepHeader extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -31,9 +33,7 @@ class StepHeader extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: AppColors.headerGradient,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.12),
-            ),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
             boxShadow: [
               BoxShadow(
                 color: AppColors.ntcBlue.withValues(alpha: 0.28),

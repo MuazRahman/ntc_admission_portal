@@ -2,14 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
+
 import '../../app/utils/constants.dart';
 
+/// Photo upload: compresses to ~200KB, sends base64 via Apps Script.
 class GoogleDriveService {
   static const int _targetSizeBytes = 200 * 1024; // 200KB
 
+  /// Uploads a photo; returns the URL, '' when Drive accepted it but
+  /// gave no URL (web), and null on failure.
   Future<String?> uploadImage(String imagePath, String rollNumber) async {
     try {
       List<int> imageBytes;
@@ -32,7 +37,9 @@ class GoogleDriveService {
       final compressed = _compressImage(imageBytes, _targetSizeBytes);
       final base64Image = base64Encode(compressed);
 
-      print('[DriveService] Compressed size: ${compressed.length} bytes, base64 length: ${base64Image.length}');
+      print(
+        '[DriveService] Compressed size: ${compressed.length} bytes, base64 length: ${base64Image.length}',
+      );
       print('[DriveService] Uploading image for roll: $rollNumber');
 
       final body = json.encode({
@@ -66,7 +73,9 @@ class GoogleDriveService {
         } catch (_) {
           // Response body not parseable on web — upload DID succeed on Drive
           // Return empty string to indicate "success but no URL available"
-          print('[DriveService] Response not parseable, upload succeeded on Drive');
+          print(
+            '[DriveService] Response not parseable, upload succeeded on Drive',
+          );
           return '';
         }
       } else {
@@ -79,6 +88,7 @@ class GoogleDriveService {
     }
   }
 
+  /// Shrinks the JPEG via binary search on quality to fit the target size.
   List<int> _compressImage(List<int> bytes, int targetBytes) {
     // Decode the image
     final image = img.decodeImage(Uint8List.fromList(bytes));
@@ -89,7 +99,9 @@ class GoogleDriveService {
 
     // If already under target, just re-encode as JPEG quality 90
     if (bytes.length <= targetBytes) {
-      print('[DriveService] Image already under target, re-encoding at quality 90');
+      print(
+        '[DriveService] Image already under target, re-encoding at quality 90',
+      );
       return img.encodeJpg(image, quality: 90);
     }
 
@@ -110,7 +122,9 @@ class GoogleDriveService {
       }
     }
 
-    print('[DriveService] Best quality found, final size: ${best.length} bytes');
+    print(
+      '[DriveService] Best quality found, final size: ${best.length} bytes',
+    );
     return best;
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../app/theme/app_colors.dart';
 import '../../../app/utils/responsive.dart';
 import '../../controllers/admission_controller.dart';
 import '../../controllers/language_controller.dart';
 
+/// Step progress trail with localized labels (currently unused).
 class ProgressStepper extends StatelessWidget {
   const ProgressStepper({super.key});
 
@@ -15,8 +17,8 @@ class ProgressStepper extends StatelessWidget {
     final isMobile = Responsive.isMobile(context);
 
     final steps = langController.isBn
-        ? ['রোল', 'অভিভাবক', 'পরিচয়', 'এসএসসি', 'এইচএসসি', 'জমা']
-        : ['Roll', 'Parents', 'ID', 'SSC', 'HSC', 'Submit'];
+        ? ['মোবাইল', 'অভিভাবক', 'পরিচয়', 'এসএসসি', 'এইচএসসি', 'জমা']
+        : ['Mobile', 'Parents', 'ID', 'SSC', 'HSC', 'Submit'];
 
     final icons = [
       Icons.badge,
@@ -37,7 +39,11 @@ class ProgressStepper extends StatelessWidget {
     });
   }
 
-  Widget _buildDesktopStepper(int current, List<String> steps, List<IconData> icons) {
+  Widget _buildDesktopStepper(
+    int current,
+    List<String> steps,
+    List<IconData> icons,
+  ) {
     return Row(
       children: List.generate(steps.length, (index) {
         final isCompleted = index < current;
@@ -58,14 +64,18 @@ class ProgressStepper extends StatelessWidget {
                         gradient: isCompleted
                             ? AppColors.stepCompletedGradient
                             : isActive
-                                ? AppColors.stepActiveGradient
-                                : null,
-                        color: !isCompleted && !isActive ? const Color(0xFFE8E8E8) : null,
+                            ? AppColors.stepActiveGradient
+                            : null,
+                        color: !isCompleted && !isActive
+                            ? const Color(0xFFE8E8E8)
+                            : null,
                         shape: BoxShape.circle,
                         boxShadow: isActive
                             ? [
                                 BoxShadow(
-                                  color: AppColors.ntcBlue.withValues(alpha: 0.35),
+                                  color: AppColors.ntcBlue.withValues(
+                                    alpha: 0.35,
+                                  ),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
@@ -74,10 +84,16 @@ class ProgressStepper extends StatelessWidget {
                       ),
                       child: Center(
                         child: isCompleted
-                            ? const Icon(Icons.check, color: Colors.white, size: 18)
+                            ? const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 18,
+                              )
                             : Icon(
                                 icons[index],
-                                color: isActive ? Colors.white : AppColors.textHint,
+                                color: isActive
+                                    ? Colors.white
+                                    : AppColors.textHint,
                                 size: 18,
                               ),
                       ),
@@ -87,12 +103,14 @@ class ProgressStepper extends StatelessWidget {
                       steps[index],
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+                        fontWeight: isActive
+                            ? FontWeight.w600
+                            : FontWeight.w500,
                         color: isActive
                             ? AppColors.ntcBlue
                             : isCompleted
-                                ? AppColors.ntcGreen
-                                : AppColors.textHint,
+                            ? AppColors.ntcGreen
+                            : AppColors.textHint,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -105,7 +123,9 @@ class ProgressStepper extends StatelessWidget {
                     height: 2,
                     margin: const EdgeInsets.only(bottom: 18),
                     decoration: BoxDecoration(
-                      color: isCompleted ? AppColors.ntcGreen : const Color(0xFFE8E8E8),
+                      color: isCompleted
+                          ? AppColors.ntcGreen
+                          : const Color(0xFFE8E8E8),
                       borderRadius: BorderRadius.circular(1),
                     ),
                   ),
@@ -117,7 +137,11 @@ class ProgressStepper extends StatelessWidget {
     );
   }
 
-  Widget _buildMobileStepper(int current, List<String> steps, List<IconData> icons) {
+  Widget _buildMobileStepper(
+    int current,
+    List<String> steps,
+    List<IconData> icons,
+  ) {
     return Row(
       children: List.generate(steps.length, (index) {
         final isCompleted = index < current;
@@ -135,9 +159,11 @@ class ProgressStepper extends StatelessWidget {
                   gradient: isCompleted
                       ? AppColors.stepCompletedGradient
                       : isActive
-                          ? AppColors.stepActiveGradient
-                          : null,
-                  color: !isCompleted && !isActive ? const Color(0xFFE8E8E8) : null,
+                      ? AppColors.stepActiveGradient
+                      : null,
+                  color: !isCompleted && !isActive
+                      ? const Color(0xFFE8E8E8)
+                      : null,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -162,8 +188,8 @@ class ProgressStepper extends StatelessWidget {
                   color: isActive
                       ? AppColors.ntcBlue
                       : isCompleted
-                          ? AppColors.ntcGreen
-                          : AppColors.textHint,
+                      ? AppColors.ntcGreen
+                      : AppColors.textHint,
                 ),
                 textAlign: TextAlign.center,
               ),

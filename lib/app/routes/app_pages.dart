@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+
 import 'app_routes.dart';
 import '../../presentation/views/landing_page.dart';
 import '../../presentation/views/admission_flow_page.dart';
 import '../../presentation/views/success_page.dart';
 import '../../presentation/bindings/admission_binding.dart';
 
+/// Route table: landing → admission flow → success.
 class AppPages {
   static const initial = AppRoutes.landing;
 
@@ -14,6 +16,7 @@ class AppPages {
       page: () => const LandingPage(),
       transition: Transition.fadeIn,
     ),
+    // Own binding: controllers + services live only during the flow.
     GetPage(
       name: AppRoutes.admissionFlow,
       page: () => const AdmissionFlowPage(),

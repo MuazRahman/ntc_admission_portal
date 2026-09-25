@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../../app/utils/responsive.dart';
 
+/// Picks the mobile/tablet/desktop child by screen width.
 class ResponsiveLayout extends StatelessWidget {
   final Widget mobile;
   final Widget? tablet;

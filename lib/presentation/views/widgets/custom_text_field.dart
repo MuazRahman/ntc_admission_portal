@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../app/theme/app_colors.dart';
 
+/// Shared labeled input used by every form step.
 class CustomTextField extends StatelessWidget {
   final String label;
   final String hint;
@@ -48,6 +50,7 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Field label above the input box.
         Padding(
           padding: const EdgeInsets.only(left: 4, bottom: 8),
           child: Text(
@@ -60,6 +63,7 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
         ),
+        // Input box with soft shadow; borders switch per state below.
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -114,25 +118,43 @@ class CustomTextField extends StatelessWidget {
               fillColor: readOnly ? const Color(0xFFF1F5F9) : Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
+                borderSide: const BorderSide(
+                  color: AppColors.inputBorder,
+                  width: 1.5,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.inputBorder, width: 1.5),
+                borderSide: const BorderSide(
+                  color: AppColors.inputBorder,
+                  width: 1.5,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.ntcBlue, width: 1.8),
+                borderSide: const BorderSide(
+                  color: AppColors.ntcBlue,
+                  width: 1.8,
+                ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.errorColor, width: 1.5),
+                borderSide: const BorderSide(
+                  color: AppColors.errorColor,
+                  width: 1.5,
+                ),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.errorColor, width: 1.8),
+                borderSide: const BorderSide(
+                  color: AppColors.errorColor,
+                  width: 1.8,
+                ),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 16,
+              ),
               counterText: '',
               errorStyle: GoogleFonts.inter(
                 fontSize: 13,

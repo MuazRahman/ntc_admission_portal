@@ -1,8 +1,10 @@
+/// App-wide constants: backend endpoints, board lists, image rules.
 class AppConstants {
   AppConstants._();
 
   // Google Apps Script URL (sole backend - handles read, write, image upload)
-  static const String appsScriptUrl = 'https://script.google.com/macros/s/AKfycbw8ltYA38s5bV96E8jEN6czSNy_WOpFnOo_odSg55hBcUaljG9aYAxZUCr-58GLpWwg/exec';
+  static const String appsScriptUrl =
+      'https://script.google.com/macros/s/AKfycbwM-_2puAjqE5sJPj3h_tuT0OSRgNPYFG2HhhUNItmR23ZPN39WSmnJxeDHtNN9uSx-/exec';
   static const String driveFolderId = '1cxcUVOi9LHuK9MBFMiYWUGHMtBtENC-9';
 
   // Bilingual Boards List
@@ -39,5 +41,10 @@ class AppConstants {
 
   // Image Configuration
   static const int maxImageSizeMB = 5;
-  static const List<String> allowedImageExtensions = ['.jpg', '.jpeg', '.png', '.svg'];
+  static const List<String> allowedImageExtensions = [
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.svg',
+  ];
 }

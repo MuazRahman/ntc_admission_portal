@@ -1,10 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+
 import 'constants.dart';
 
+/// Small formatting/generation utilities.
 class Helpers {
   Helpers._();
 
+  /// Builds the submission reference (e.g. NTC-123456).
   static String generateReferenceNumber(String rollNumber) {
     return '${AppConstants.referencePrefix}-$rollNumber';
   }

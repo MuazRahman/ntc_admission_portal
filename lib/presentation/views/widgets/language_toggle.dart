@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../controllers/language_controller.dart';
 
+/// Header pill that flips the app between English and Bengali.
 class LanguageToggle extends StatelessWidget {
   const LanguageToggle({super.key});
 
@@ -16,9 +18,7 @@ class LanguageToggle extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.14),
           borderRadius: BorderRadius.circular(100),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
-          ),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
         ),
         child: InkWell(
           onTap: controller.toggleLanguage,
