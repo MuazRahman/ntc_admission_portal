@@ -81,7 +81,10 @@ class Validators {
     if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
       return 'Registration number must contain only digits';
     }
-    if (value.trim().length != 10) {
+    if (value.trim().length >= 1 && value.trim().length < 6) {
+      return 'Registration number must be exactly 6 digits';
+    }
+    if (value.trim().length > 6 && value.trim().length < 10) {
       return 'Registration number must be exactly 10 digits';
     }
     return null;
