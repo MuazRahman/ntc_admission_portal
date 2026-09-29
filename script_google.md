@@ -1,15 +1,15 @@
-// # Google Apps Script
+# Google Apps Script
 
-// > **IMPORTANT:** In the Apps Script editor, go to **Services** (left sidebar, cube icon) > **Add a service** > add **Drive API**. Then redeploy.
+> **IMPORTANT:** In the Apps Script editor, go to **Services** (left sidebar, cube icon) > **Add a service** > add **Drive API**. Then redeploy.
 
-// ## Configuration
-// ```javascript
-const SHEET_ID = '1sFvESG2YhyIuECLpMD6xr9lo7RrYFVMIrm4C-TmB8E8';
-const DRIVE_FOLDER_ID = '1cxcUVOi9LHuK9MBFMiYWUGHMtBtENC-9';
-// ```
+## Configuration
+```javascript
+const SHEET_ID = '1qmLYwxMrfd-BGaaGBSE8Xie-tC8CrN5E4YYgzHW0bFU';
+const DRIVE_FOLDER_ID = '1kxuaJDszSwnswIQJJPV2R-WtNG2Pl-D7';
+```
 
-// ## GET Handler
-// ```javascript
+## GET Handler
+```javascript
 function doGet(e) {
   try {
     const action = e.parameter.action;
@@ -24,6 +24,9 @@ function doGet(e) {
       case 'appendSubmission':
         const data = JSON.parse(e.parameter.data);
         return jsonResponse(appendSubmission(data));
+      case 'addStudents':
+        const rows = JSON.parse(e.parameter.data);
+        return jsonResponse(addStudents(rows));
       case 'uploadImage':
         return jsonResponse(uploadImage(e.parameter.image, e.parameter.rollNumber, e.parameter.folderId));
       default:
@@ -33,10 +36,10 @@ function doGet(e) {
     return jsonResponse({ success: false, error: err.toString() });
   }
 }
-// ```
+```
 
-// POST Handler
-// javascript
+## POST Handler
+```javascript
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
@@ -50,6 +53,8 @@ function doPost(e) {
         return jsonResponse(verify(data.roll));
       case 'appendSubmission':
         return jsonResponse(appendSubmission(data.data));
+      case 'addStudents':
+        return jsonResponse(addStudents(data.data));
       case 'uploadImage':
         return jsonResponse(uploadImage(data.image, data.rollNumber, data.folderId));
       default:
@@ -59,11 +64,11 @@ function doPost(e) {
     return jsonResponse({ success: false, error: err.toString() });
   }
 }
-// ``
+```
 
-// ## Functions
-// ```javascript
-// GET: Read student list (Roll -> Name)
+## Functions
+```javascript
+// GET: Read student list (Phone -> Name)
 // No slice(1): sheets may start with data in row 1. Header/empty rows are
 // filtered out instead (col A must contain a digit).
 function getStudents() {
@@ -122,6 +127,8 @@ function verify(rollNumber) {
 
 // Append submission row (with server-side duplicate guard)
 // submissions sheet: column B (index 1) = rollNumber (from toSheetRow)
+// Current Flutter row (10 cols): Ref, Phone, FullName, DocType, DocNumber,
+// SSC_Roll, SSC_RegNo, SSC_Board, SSC_Year, SubmittedAt
 function appendSubmission(rowData) {
   const rollNumber = rowData[1].toString().trim();
   if (checkSubmission(rollNumber).exists) {
@@ -130,6 +137,35 @@ function appendSubmission(rowData) {
   const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName('submissions');
   sheet.appendRow(rowData);
   return { success: true };
+}
+
+// Bulk add students from Excel VB: students!A=phone, B=name only.
+// Skips blanks and existing normRoll matches. VB sends {action:'addStudents', data:[[phone,name],...]}
+function addStudents(rows) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName('students');
+    var cur = sheet.getDataRange().getValues();
+    var have = {};
+    cur.forEach(function (r) {
+      var k = normRoll(r[0]);
+      if (k) have[k] = 1;
+    });
+    var added = 0;
+    (rows || []).forEach(function (r) {
+      var ph = (r[0] || '').toString().trim();
+      var nm = (r[1] || '').toString().trim();
+      var k = normRoll(ph);
+      if (!k || !nm || have[k]) return;
+      sheet.appendRow([ph, nm]);
+      have[k] = 1;
+      added++;
+    });
+    return { success: true, added: added };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 // Upload image to Google Drive as {rollNumber}.jpg
@@ -161,4 +197,4 @@ function jsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
 }
-//```
+```

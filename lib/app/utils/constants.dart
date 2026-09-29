@@ -4,7 +4,7 @@ class AppConstants {
 
   // Google Apps Script URL (sole backend - handles read, write, image upload)
   static const String appsScriptUrl =
-      'https://script.google.com/macros/s/AKfycbzyIv8TCgyW85LKHFqyrIFPsBvw6fJsMiiUf78_tZUccW74jyyLVO2iIudTp9_18OftZQ/exec';
+      'https://script.google.com/macros/s/AKfycbwC1nnHBz3cdiRbPGe1Y8FXaKj2bHcVf8sEIahguIVWLBPYGkgqIkFWdX_CpBcgle4D1A/exec';
   static const String driveFolderId = '1kxuaJDszSwnswIQJJPV2R-WtNG2Pl-D7';
 
   // Bilingual Boards List
