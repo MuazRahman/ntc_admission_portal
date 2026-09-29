@@ -86,8 +86,8 @@ class _Step1RollVerificationState extends State<Step1RollVerification> {
   Widget build(BuildContext context) {
     final controller = Get.find<AdmissionController>();
 
-    if (!_initialized && controller.formData.value.rollNumber.isNotEmpty) {
-      _rollController.text = controller.formData.value.rollNumber;
+    if (!_initialized && controller.formData.value.phoneNumber.isNotEmpty) {
+      _rollController.text = controller.formData.value.phoneNumber;
       _initialized = true;
     }
 

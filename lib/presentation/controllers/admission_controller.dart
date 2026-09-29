@@ -254,10 +254,10 @@ class AdmissionController extends GetxController {
 
     try {
       print('[Controller] Starting form submission...');
-      print('[Controller] Roll: ${formData.value.rollNumber}');
+      print('[Controller] Roll: ${formData.value.phoneNumber}');
       print('[Controller] Image path: ${selectedImagePath.value}');
 
-      final roll = formData.value.rollNumber.trim();
+      final roll = formData.value.phoneNumber.trim();
       if (roll.isEmpty || !isRollVerified.value) {
         Get.snackbar(
           'error'.tr,
@@ -324,7 +324,7 @@ class AdmissionController extends GetxController {
         print('[Controller] Uploading image...');
         final url = await _repository.uploadImage(
           selectedImagePath.value,
-          formData.value.rollNumber,
+          formData.value.phoneNumber,
         );
         if (url != null && url.isNotEmpty) {
           imageUrl.value = url;
@@ -341,7 +341,7 @@ class AdmissionController extends GetxController {
 
       // Generate reference number
       final refNumber = Helpers.generateReferenceNumber(
-        formData.value.rollNumber,
+        formData.value.phoneNumber,
       );
       formData.value = formData.value.copyWith(referenceNumber: refNumber);
 

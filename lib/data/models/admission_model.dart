@@ -4,7 +4,7 @@ import 'hsc_model.dart';
 
 /// Whole admission form state; immutable, updated via copyWith.
 class AdmissionModel {
-  final String rollNumber;
+  final String phoneNumber;
   final String fullName;
   final String fatherName;
   final String motherName;
@@ -17,7 +17,7 @@ class AdmissionModel {
   final String referenceNumber;
 
   AdmissionModel({
-    this.rollNumber = '',
+    this.phoneNumber = '',
     this.fullName = '',
     this.fatherName = '',
     this.motherName = '',
@@ -45,7 +45,7 @@ class AdmissionModel {
     String? referenceNumber,
   }) {
     return AdmissionModel(
-      rollNumber: rollNumber ?? this.rollNumber,
+      phoneNumber: rollNumber ?? this.phoneNumber,
       fullName: fullName ?? this.fullName,
       fatherName: fatherName ?? this.fatherName,
       motherName: motherName ?? this.motherName,
@@ -60,26 +60,19 @@ class AdmissionModel {
   }
 
   /// Serializes to a sheet row (column order must match Apps Script).
+  /// Only fields collected in the active flow (Step1/3/4/6) are saved.
+  /// PhotoURL omitted — photo is stored in Drive as {phoneNumber}.jpg.
   List<dynamic> toSheetRow() {
     return [
       referenceNumber,
-      rollNumber,
+      phoneNumber,
       fullName,
-      fatherName,
-      motherName,
       identity.documentType == DocumentType.birthCertificate ? 'BC' : 'NID',
       identity.documentNumber,
       ssc.roll,
       ssc.registrationNumber,
       ssc.board,
       ssc.passingYear,
-      ssc.gpa,
-      hsc.roll,
-      hsc.registrationNumber,
-      hsc.board,
-      hsc.passingYear,
-      hsc.gpa,
-      imageUrl ?? '',
       DateTime.now().toIso8601String(),
     ];
   }
